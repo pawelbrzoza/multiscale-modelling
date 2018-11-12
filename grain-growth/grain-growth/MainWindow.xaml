@@ -1,0 +1,105 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="grain_growth.MainWindow"
+        mc:Ignorable="d"
+        Title="Multiscale Modelling - Grain Growth" Height="600" Width="800" Background="#FF373737" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow">
+
+    <Window.ContextMenu>
+        <ContextMenu/>
+    </Window.ContextMenu>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="413*"/>
+            <ColumnDefinition Width="381*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Play" HorizontalAlignment="Center" Margin="136,482,134.8,0" VerticalAlignment="Top" Width="142" Height="56" FontSize="24" Click="Play_Button_Click"/>
+        <TextBox x:Name="NumOfGrainsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="10"/>
+        <Label Content="Number of grain:" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold">
+            <Label.Background>
+                <ImageBrush/>
+            </Label.Background>
+        </Label>
+        <Image x:Name="Image" HorizontalAlignment="Left" Height="302" Margin="44.2,111,0,0" Width="302" Grid.Column="1" VerticalAlignment="Top"/>
+        <DockPanel HorizontalAlignment="Left" Height="26" LastChildFill="False" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0" Grid.ColumnSpan="2">
+            <Menu DockPanel.Dock="Top" Margin="0,0,-0.4,0" Width="800">
+                <MenuItem Header="File">
+                    <MenuItem Header="Microstructures">
+                        <MenuItem Header="Import">
+                            <MenuItem Header="TXT File" Click="ImportTXT_Click"/>
+                            <MenuItem Header="Bitmap" Click="ImportBitmap_Click"/>
+                        </MenuItem>
+                        <MenuItem Header="Export">
+                            <MenuItem Header="TXT File" Click="ExportTXT_Click"/>
+                            <MenuItem Header="Bitmap" Click="ExportBitmap_Click"/>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Exit" Click="Exit_Click"/>
+                </MenuItem>
+            </Menu>
+            <StackPanel></StackPanel>
+        </DockPanel>
+        <Label Content="Inclusions:" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold">
+            <Label.Background>
+                <ImageBrush/>
+            </Label.Background>
+        </Label>
+        <CheckBox x:Name="InclusionsCheckBox" Content="&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,220,0,0" Height="24" Width="30" FontSize="20"/>
+        <Label Content="Type of growth:" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold">
+            <Label.Background>
+                <ImageBrush/>
+            </Label.Background>
+        </Label>
+        <StackPanel HorizontalAlignment="Left" Height="57" Margin="264,81,0,0" VerticalAlignment="Top" Width="174" Grid.ColumnSpan="2">
+            <RadioButton x:Name="NeumannRadioButton" Margin="2,2,2.2,2" IsChecked="True" Content="Von Neumann"/>
+            <RadioButton x:Name="MooreRadioButton" Margin="2,2,2.2,2" IsChecked="False" Content="Moore"/>
+            <RadioButton x:Name="ExtendedMooreRadioButton" Margin="2,2,2.2,2" IsChecked="False" Content="Moore 2"/>
+        </StackPanel>
+        <Label Content="Probability [%]:" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold">
+            <Label.Background>
+                <ImageBrush/>
+            </Label.Background>
+        </Label>
+        <TextBox x:Name="GrowthProbabilityTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="50"/>
+        <Label Content="number of inclusions:" HorizontalAlignment="Left" Margin="39,293,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold">
+            <Label.Background>
+                <ImageBrush/>
+            </Label.Background>
+        </Label>
+        <TextBox x:Name="NumOfInclusionsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="20"
+                 IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}"/>
+        <Label Content="size of inclusions:" HorizontalAlignment="Left" Margin="39,347,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold">
+            <Label.Background>
+                <ImageBrush/>
+            </Label.Background>
+        </Label>
+        <TextBox x:Name="SizeOfInclusionsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,347,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="5"
+            IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}"/>
+        <Label Content="type of inclusions:" HorizontalAlignment="Left" Margin="39,244,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold">
+            <Label.Background>
+                <ImageBrush/>
+            </Label.Background>
+        </Label>
+        <StackPanel HorizontalAlignment="Left" Height="35" Margin="264,249,0,0" VerticalAlignment="Top" Width="120">
+            <RadioButton x:Name="SquareRadioButton" Margin="2" IsChecked="true"
+                                              IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Square</RadioButton>
+            <RadioButton x:Name="CircularRadioButton" Margin="2" IsChecked="false"
+                                              IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Circular</RadioButton>
+        </StackPanel>
+        <Label Content="time of creation:" HorizontalAlignment="Left" Margin="39,386,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold">
+            <Label.Background>
+                <ImageBrush/>
+            </Label.Background>
+        </Label>
+        <StackPanel HorizontalAlignment="Left" Height="79" Margin="264,386,0,0" VerticalAlignment="Top" Width="149" Grid.ColumnSpan="2">
+            <RadioButton x:Name="BeginInclusionRadioButton" Margin="2" IsChecked="true" Click="BeginInclusionRadioButton_Click"
+                                          IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Beginning of simulation</RadioButton>
+            <RadioButton x:Name="AfterInclusionRadioButton" Margin="2" IsChecked="false" Click="AfterInclusionRadioButton_Click"
+                                         IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="After simulation &#xD;&#xA;(on grain boundaries)"/>
+            <Button x:Name="AddInclusionsButton" Click="AddInclusionsButton_Click" Width="120" Height="20"
+                                    IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Add inclusions</Button>
+        </StackPanel>
+    </Grid>
+</Window>
