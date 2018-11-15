@@ -8,7 +8,7 @@
 
         public int RangeHeight { get; set; }
 
-        public int? GrowthProbability { get; set; }
+        public int GrowthProbability { get; set; }
 
         public NeighbourhoodType NeighbourhoodType { get; set; }
 

@@ -16,8 +16,8 @@ namespace grain_growth.Alghorithms
         {
             this.random =  new Random();
         }
-        // int? means, it is a "boxed" integer value.That means int? is nullable!
-        public Range Grow(NeighbourhoodType neighbourhoodType, Range prevRange, int? growthProbability)
+        
+        public Range Grow(NeighbourhoodType neighbourhoodType, Range prevRange, int growthProbability)
         {
             var currRange = new Range(prevRange.Width, prevRange.Height, true);
             

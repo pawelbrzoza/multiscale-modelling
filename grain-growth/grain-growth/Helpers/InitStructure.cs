@@ -36,7 +36,7 @@ namespace grain_growth.Helpers
             tempRange.StructureBitmap = new Bitmap(properties.RangeWidth, properties.RangeHeight);
 
             // inclusions at the beginning
-            if (properties.Inclusions.AreEnable && (properties.Inclusions.CreationTime == InclusionsCreationTime.Begin))
+            if (properties.Inclusions.IsEnable && (properties.Inclusions.CreationTime == InclusionsCreationTime.Begin))
             {
                 InitInclusions inclusions = new InitInclusions(properties.Inclusions);
                 tempRange = inclusions.AddInclusionsAtTheBegining(tempRange);

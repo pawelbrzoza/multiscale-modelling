@@ -48,7 +48,7 @@ namespace grain_growth
                 {
                     CreationTime = ChooseCreationTime(),
                     InclusionsType = ChooseInclusionsType(),
-                    AreEnable = (bool)InclusionsCheckBox.IsChecked,
+                    IsEnable = (bool)InclusionsCheckBox.IsChecked,
                     Number = Converters.StringToInt(NumOfInclusionsTextBox.Text),
                     Size = Converters.StringToInt(SizeOfInclusionsTextBox.Text),
                 }
@@ -61,7 +61,7 @@ namespace grain_growth
             prevRange = currRange;
             Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
 
-            if (prevRange.IsFull)
+            if (currRange.IsFull)
             {
                 if (AfterInclusionRadioButton.IsChecked == true && InclusionsCheckBox.IsChecked == true)
                     AddInclusionsButton_Click(new object(), new RoutedEventArgs());
@@ -87,7 +87,13 @@ namespace grain_growth
             if (openfiledialog.ShowDialog() == true)
             {
                 Image.Source = Converters.BitmapToImageSource(new Bitmap(openfiledialog.FileName));
+                currRange.StructureBitmap = new Bitmap(openfiledialog.FileName);
+                
+                CelularAutomata.updateGrainsArray(currRange);
+                CelularAutomata.updateBitmap(currRange);
             }
+
+            dispatcher.Stop();
         }
 
         private void ImportTXT_Click(object sender, RoutedEventArgs e)
@@ -101,6 +107,8 @@ namespace grain_growth
             {
                 Image.Source = Converters.BitmapToImageSource(new Bitmap(openfiledialog.FileName));
             }
+
+            dispatcher.Stop();
         }
 
         private void ExportBitmap_Click(object sender, RoutedEventArgs e)
@@ -148,7 +156,7 @@ namespace grain_growth
             {
                 SetProperties();
 
-                if (properties.Inclusions.AreEnable && (properties.Inclusions.CreationTime == InclusionsCreationTime.After))
+                if (properties.Inclusions.IsEnable && (properties.Inclusions.CreationTime == InclusionsCreationTime.After))
                 {
                     var inclusions = new InitInclusions(properties.Inclusions);
                     CelularAutomata.updateGrainsArray(currRange);

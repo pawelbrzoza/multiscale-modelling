@@ -15,7 +15,7 @@
             <ColumnDefinition Width="413*"/>
             <ColumnDefinition Width="381*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Play" HorizontalAlignment="Center" Margin="136,482,134.8,0" VerticalAlignment="Top" Width="142" Height="56" FontSize="24" Click="Play_Button_Click"/>
+        <Button Content="Play" HorizontalAlignment="Center" Margin="70,461,200.8,0" VerticalAlignment="Top" Width="142" Height="56" FontSize="24" Click="Play_Button_Click"/>
         <TextBox x:Name="NumOfGrainsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="10"/>
         <Label Content="Number of grain:" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold">
             <Label.Background>
@@ -93,9 +93,9 @@
                 <ImageBrush/>
             </Label.Background>
         </Label>
-        <StackPanel HorizontalAlignment="Left" Height="79" Margin="264,386,0,0" VerticalAlignment="Top" Width="149" Grid.ColumnSpan="2">
+        <StackPanel HorizontalAlignment="Left" Height="100" Margin="264,386,0,0" VerticalAlignment="Top" Width="149" Grid.ColumnSpan="2">
             <RadioButton x:Name="BeginInclusionRadioButton" Margin="2" IsChecked="true" Click="BeginInclusionRadioButton_Click"
-                                          IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Beginning of simulation</RadioButton>
+                                          IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Beginning of simulation&#xD;&#xA;(random)"/>
             <RadioButton x:Name="AfterInclusionRadioButton" Margin="2" IsChecked="false" Click="AfterInclusionRadioButton_Click"
                                          IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="After simulation &#xD;&#xA;(on grain boundaries)"/>
             <Button x:Name="AddInclusionsButton" Click="AddInclusionsButton_Click" Width="120" Height="20"

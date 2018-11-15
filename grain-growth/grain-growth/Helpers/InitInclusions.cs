@@ -66,13 +66,13 @@ namespace grain_growth.Helpers
             return range;
         }
 
-        private void AddSquareInclusion(Range range, Point coordinates)
+        private void AddSquareInclusion(Range range, Point center)
         {
-            int a = (int)(inclusionsProperties.Size / Math.Sqrt(2));
+            int a = (int)inclusionsProperties.Size;
             int halfA = (a / 2);
-            for (int x = coordinates.X - halfA; (x <= coordinates.X + halfA && x < range.Width && x > 0); x++)
+            for (int x = center.X - halfA; (x <= center.X + halfA && x < range.Width && x > 0); x++)
             {
-                for (int y = coordinates.Y - halfA; (y <= coordinates.Y + halfA && y < range.Height && y > 0); y++)
+                for (int y = center.Y - halfA; (y <= center.Y + halfA && y < range.Height && y > 0); y++)
                 {
                     if (!InitStructure.IsIdSpecial(range.GrainsArray[x, y].Id) || range.GrainsArray[x, y].Id == 0)
                     {
@@ -83,9 +83,9 @@ namespace grain_growth.Helpers
             }
         }
 
-        private void AddCirularInclusion(Range range, Point coordinates)
+        private void AddCirularInclusion(Range range, Point center)
         {
-            var pointsInside = GetPointsInsideCircle(inclusionsProperties.Size, coordinates);
+            var pointsInside = GetPointsInsideCircle(inclusionsProperties.Size / 2, center);
             foreach (var point in pointsInside)
             {
                 if (point.X < range.Width && point.X > 0 && point.Y < range.Height && point.Y > 0)

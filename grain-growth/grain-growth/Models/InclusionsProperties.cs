@@ -2,7 +2,7 @@
 { 
     public class InclusionsProperties
     {
-        public bool AreEnable { get; set; }
+        public bool IsEnable { get; set; }
 
         public int Number { get; set; }
 
