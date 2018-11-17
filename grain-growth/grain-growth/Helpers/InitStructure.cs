@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-
+using grain_growth.Alghorithms;
 using grain_growth.Models;
 
 namespace grain_growth.Helpers
@@ -54,7 +55,7 @@ namespace grain_growth.Helpers
 
                 tempRange.GrainsArray[coordinates.X, coordinates.Y].Color = Color.FromArgb(random.Next(10, 240), random.Next(10, 240), random.Next(2, 240));
                 tempRange.GrainsArray[coordinates.X, coordinates.Y].Id = grainNumber;
-                
+
             }
             return tempRange;
         }
@@ -94,7 +95,6 @@ namespace grain_growth.Helpers
         {
             return new Point(random.Next(1, width - 1), random.Next(1, height - 1));
         }
-
         public static bool IsIdSpecial(int id)
         {
             return Enum.IsDefined(typeof(SpecialId), id);

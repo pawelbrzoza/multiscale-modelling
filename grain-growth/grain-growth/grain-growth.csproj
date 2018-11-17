@@ -83,6 +83,7 @@
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\InitInclusions.cs" />
     <Compile Include="Helpers\InitStructure.cs" />
+    <Compile Include="Models\Boundaries.cs" />
     <Compile Include="Models\Grain.cs" />
     <Compile Include="Models\InclusionsCreationTime.cs" />
     <Compile Include="Models\InclusionsProperties.cs" />
@@ -97,6 +98,8 @@
     <Compile Include="Models\NeighbourhoodType.cs" />
     <Compile Include="Models\Range.cs" />
     <Compile Include="Models\SpecialId.cs" />
+    <Compile Include="Models\Substructures.cs" />
+    <Compile Include="Models\SubstructuresType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

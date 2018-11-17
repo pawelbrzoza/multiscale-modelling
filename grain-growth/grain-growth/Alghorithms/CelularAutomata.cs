@@ -159,6 +159,7 @@ namespace grain_growth.Alghorithms
                 }
             }
             updateBitmap(currRange);
+            Substructures.SubstrListPoints = new List<Point>();
             return currRange;
         }
 
@@ -229,7 +230,7 @@ namespace grain_growth.Alghorithms
 
             Dictionary<Color, int> grainIds = new Dictionary<Color, int>
             {
-                { Color.FromArgb(0, 0, 0), -1 }
+                { Color.FromArgb(0, 0, 0), 0 },
             };
 
             if (range.StructureBitmap != null)
@@ -249,9 +250,9 @@ namespace grain_growth.Alghorithms
             }
         }
 
-        private static int ChooseGrainId(Dictionary<Color, int> grainIds, Color color)
+        public static int ChooseGrainId(Dictionary<Color, int> grainIds, Color color)
         {
-            int nextId = grainIds.Values.Max() + 1;
+            int nextId = grainIds.Values.Max();
 
             if (grainIds.ContainsKey(color))
             {

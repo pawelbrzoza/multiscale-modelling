@@ -13,5 +13,7 @@
         public NeighbourhoodType NeighbourhoodType { get; set; }
 
         public InclusionsProperties Inclusions { get; set; }
+
+        public SubstructuresType SubstructuresType { get; set; }
     }
 }
