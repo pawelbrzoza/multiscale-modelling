@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="grain_growth.MainWindow"
         mc:Ignorable="d"
-        Title="Multiscale Modelling - Grain Growth" Height="756.8" Width="800" Background="#FF373737" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow">
+        Title="Multiscale Modelling - Grain Growth" Height="767.2" Width="800" Background="#FF373737" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow">
 
     <Window.ContextMenu>
         <ContextMenu/>
@@ -15,14 +15,14 @@
             <ColumnDefinition Width="413*"/>
             <ColumnDefinition Width="381*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Play" HorizontalAlignment="Center" Margin="130.2,477,108.6,0" VerticalAlignment="Top" Width="142" Height="56" FontSize="24" Click="Play_Button_Click" Grid.Column="1"/>
-        <TextBox x:Name="NumOfGrainsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="10"/>
+        <Button Content="Play" HorizontalAlignment="Center" Margin="130.2,546,108.6,0" VerticalAlignment="Top" Width="142" Height="56" FontSize="24" Click="Play_Button_Click" Grid.Column="1"/>
+        <TextBox x:Name="NumOfGrainsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="20"/>
         <Label Content="Number of grain:" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold">
             <Label.Background>
                 <ImageBrush/>
             </Label.Background>
         </Label>
-        <Image x:Name="Image" MouseLeftButtonDown="Image_Click" HorizontalAlignment="Left" Height="302" Margin="44.2,111,0,0" Width="302" Grid.Column="1" VerticalAlignment="Top" Cursor="Pen"/>
+        <Image x:Name="Image" MouseLeftButtonDown="Image_Click" HorizontalAlignment="Left" Height="302" Margin="44.2,95,0,0" Width="302" Grid.Column="1" VerticalAlignment="Top" Cursor="Pen"/>
         <DockPanel HorizontalAlignment="Left" Height="26" LastChildFill="False" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0" Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top" Margin="0,0,-0.4,0" Width="800">
                 <MenuItem Header="File">
@@ -117,13 +117,13 @@
                 <ImageBrush/>
             </Label.Background>
         </Label>
-        <CheckBox x:Name="SubstructuresCheckBox" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,502,0,0" Height="24" Width="30" FontSize="20"/>
+        <CheckBox IsEnabled="False" x:Name="SubstructuresCheckBox" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,502,0,0" Height="24" Width="30" FontSize="20" />
         <Label Content="Boundaries:" HorizontalAlignment="Left" Margin="10,584,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold">
             <Label.Background>
                 <ImageBrush/>
             </Label.Background>
         </Label>
-        <CheckBox x:Name="BoundariesCheckBox" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,600,0,0" Height="24" Width="30" FontSize="20"/>
+        <CheckBox IsEnabled="False" x:Name="BoundariesCheckBox" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,600,0,0" Height="24" Width="30" FontSize="20"/>
         <Label Content="type of selecting:" HorizontalAlignment="Left" Margin="39,624,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold">
             <Label.Background>
                 <ImageBrush/>
@@ -135,7 +135,14 @@
             <RadioButton x:Name="BoundariesRadioButtonSelect" Margin="2" IsChecked="false"
                 IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Content="Select" Height="20"/>
         </StackPanel>
-        <Button Click="Generate_Boundaries_Click" Content="Generate boundaries" HorizontalAlignment="Left" Margin="51,686,0,0" VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771"/>
-        <Button Click="Clear_Content_Click" Content="Clear content" HorizontalAlignment="Left" Margin="208,686,0,0" VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771"/>
+        <Button Click="Generate_Boundaries_Click" Content="Generate boundaries" HorizontalAlignment="Left" Margin="51,686,0,0" 
+                VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}"/>
+        <Button Click="Clear_Content_Click" Content="Clear space" HorizontalAlignment="Left" Margin="208,686,0,0"
+                VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}"/>
+        <Label Content="number of selecting grains:" HorizontalAlignment="Left" Margin="44.2,418,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Grid.Column="1"/>
+        <Label x:Name="numberOfSelectingGrains" Content="0" HorizontalAlignment="Left" Margin="291.2,418,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Grid.Column="1"/>
+        <Button Click="Clear_Selected_Grains_Click" Content="Clear selected grains" HorizontalAlignment="Left" Margin="130.2,471,0,0" VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" Grid.Column="1"/>
+
+
     </Grid>
 </Window>

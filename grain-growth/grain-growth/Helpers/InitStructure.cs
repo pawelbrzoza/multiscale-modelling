@@ -14,6 +14,8 @@ namespace grain_growth.Helpers
 
             // sizes
             Range tempRange = new Range(properties.RangeWidth, properties.RangeHeight);
+
+            tempRange.IsFull = false;
   
             // border
             AddBlackBorder(tempRange);

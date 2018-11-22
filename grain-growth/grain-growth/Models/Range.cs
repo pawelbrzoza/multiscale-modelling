@@ -14,6 +14,11 @@ namespace grain_growth.Models
 
         public Grain[,] GrainsArray { get; set; }
 
+        public Range()
+        {
+            IsFull = false;
+        }
+
         public Range(int width, int height)
         {
             Width = width;

@@ -92,5 +92,29 @@ namespace grain_growth.Models
             }
             return false;
         }
+
+        public bool IsOnGrainBoundariesColor(Range currRange, Point point, Color color)
+        {
+            var neighbours = new List<Grain>
+            {
+                currRange.GrainsArray[point.X - 1, point.Y],
+                currRange.GrainsArray[point.X + 1, point.Y],
+                currRange.GrainsArray[point.X, point.Y - 1],
+                currRange.GrainsArray[point.X, point.Y + 1],
+                currRange.GrainsArray[point.X - 1, point.Y - 1],
+                currRange.GrainsArray[point.X - 1, point.Y + 1],
+                currRange.GrainsArray[point.X + 1, point.Y - 1],
+                currRange.GrainsArray[point.X + 1, point.Y + 1]
+            };
+
+            foreach (var neighbour in neighbours)
+            {
+                if (neighbour.Color == color && neighbour.Id != 0 && neighbour.Id != -1)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace grain_growth.Models
                     change = false;
                     foreach (var point in SubstrListPoints)
                     {
-                        if (range.GrainsArray[i, j].Color == range.StructureBitmap.GetPixel(point.X, point.Y))
+                        if (range.GrainsArray[i, j].Color == range.StructureBitmap.GetPixel(point.X, point.Y) )
                         {
                             if(properties.SubstructuresType == SubstructuresType.Substructure)
                             {
@@ -46,6 +46,14 @@ namespace grain_growth.Models
 
                             change = true;
                         }
+                    }
+                    if(range.GrainsArray[i, j].Id == -2){
+                        tempRange.GrainsArray[i, j] = new Grain
+                        {
+                            Id = -2,
+                            Color = Color.Black
+                        };
+                        change = true;
                     }
                     if (change == false)
                     {

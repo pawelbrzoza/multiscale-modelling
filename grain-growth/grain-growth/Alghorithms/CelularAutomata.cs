@@ -230,7 +230,7 @@ namespace grain_growth.Alghorithms
 
             Dictionary<Color, int> grainIds = new Dictionary<Color, int>
             {
-                { Color.FromArgb(0, 0, 0), 0 },
+                { Color.FromArgb(0, 0, 0), -1 },
             };
 
             if (range.StructureBitmap != null)
@@ -252,7 +252,7 @@ namespace grain_growth.Alghorithms
 
         public static int ChooseGrainId(Dictionary<Color, int> grainIds, Color color)
         {
-            int nextId = grainIds.Values.Max();
+            int nextId = grainIds.Values.Max()+1;
 
             if (grainIds.ContainsKey(color))
             {
