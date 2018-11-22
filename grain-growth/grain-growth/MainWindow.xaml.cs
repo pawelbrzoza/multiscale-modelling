@@ -84,6 +84,7 @@ namespace grain_growth
 
         private void Play_Button_Click(object sender, RoutedEventArgs e)
         {
+            RectangleCanvas.Visibility = Visibility.Hidden;
             if (Substructures.SubstrListPoints.Count > 0)
             {
                 SetProperties();
@@ -206,6 +207,7 @@ namespace grain_growth
 
         private void ImportBitmap_Click(object sender, RoutedEventArgs e)
         {
+            RectangleCanvas.Visibility = Visibility.Hidden;
             currRange = new Range();
             currRange = InitStructure.InitializeStructure(properties);
             SetProperties();
@@ -230,6 +232,7 @@ namespace grain_growth
 
         private void ImportTXT_Click(object sender, RoutedEventArgs e)
         {
+            RectangleCanvas.Visibility = Visibility.Hidden;
             currRange = new Range();
             currRange = InitStructure.InitializeStructure(properties);
             SetProperties();

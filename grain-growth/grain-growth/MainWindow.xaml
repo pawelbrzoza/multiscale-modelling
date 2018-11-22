@@ -53,9 +53,9 @@
             </Label.Background>
         </Label>
         <StackPanel HorizontalAlignment="Left" Height="57" Margin="264,81,0,0" VerticalAlignment="Top" Width="174" Grid.ColumnSpan="2">
-            <RadioButton x:Name="NeumannRadioButton" Margin="2,2,2.2,2" IsChecked="True" Content="Von Neumann" />
-            <RadioButton x:Name="MooreRadioButton" Margin="2,2,2.2,2" IsChecked="False" Content="Moore"/>
-            <RadioButton x:Name="ExtendedMooreRadioButton" Margin="2,2,2.2,2" IsChecked="False" Content="Moore 2"/>
+            <RadioButton x:Name="NeumannRadioButton" Margin="2,2,2.2,2" IsChecked="True" Content="Von Neumann" Foreground="White" />
+            <RadioButton x:Name="MooreRadioButton" Margin="2,2,2.2,2" IsChecked="False" Content="Moore" Foreground="White"/>
+            <RadioButton x:Name="ExtendedMooreRadioButton" Margin="2,2,2.2,2" IsChecked="False" Content="Moore 2" Foreground="White"/>
         </StackPanel>
         <Label Content="Probability [%]:" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold">
             <Label.Background>
@@ -83,9 +83,9 @@
             </Label.Background>
         </Label>
         <StackPanel HorizontalAlignment="Left" Height="35" Margin="264,249,0,0" VerticalAlignment="Top" Width="120">
-            <RadioButton x:Name="SquareRadioButton" Margin="2" IsChecked="true"
+            <RadioButton x:Name="SquareRadioButton" Margin="2" IsChecked="true" Foreground="White"
                                               IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Square</RadioButton>
-            <RadioButton x:Name="CircularRadioButton" Margin="2" IsChecked="false"
+            <RadioButton x:Name="CircularRadioButton" Margin="2" IsChecked="false" Foreground="White"
                                               IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Circular</RadioButton>
         </StackPanel>
         <Label Content="time of creation:" HorizontalAlignment="Left" Margin="39,386,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold">
@@ -94,9 +94,9 @@
             </Label.Background>
         </Label>
         <StackPanel HorizontalAlignment="Left" Height="111" Margin="264,386,0,0" VerticalAlignment="Top" Width="149" Grid.ColumnSpan="2">
-            <RadioButton x:Name="BeginInclusionRadioButton" Margin="2" IsChecked="true" Click="BeginInclusionRadioButton_Click"
+            <RadioButton x:Name="BeginInclusionRadioButton" Margin="2" IsChecked="true" Click="BeginInclusionRadioButton_Click" Foreground="White"
                                           IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Beginning of simulation&#xD;&#xA;(random)"/>
-            <RadioButton x:Name="AfterInclusionRadioButton" Margin="2" IsChecked="false" Click="AfterInclusionRadioButton_Click"
+            <RadioButton x:Name="AfterInclusionRadioButton" Margin="2" IsChecked="false" Click="AfterInclusionRadioButton_Click" Foreground="White"
                                          IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="After simulation &#xD;&#xA;(on grain boundaries)"/>
             <Button x:Name="AddInclusionsButton" Click="AddInclusionsButton_Click" Width="120" Height="20"
                                     IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Add inclusions" Margin="14,0,14.8,0"/>
@@ -107,9 +107,9 @@
             </Label.Background>
         </Label>
         <StackPanel HorizontalAlignment="Left" Height="35" Margin="264,531,0,0" VerticalAlignment="Top" Width="120">
-            <RadioButton x:Name="SubstrRadioButton1" Margin="2" IsChecked="true"
+            <RadioButton x:Name="SubstrRadioButton1" Margin="2" IsChecked="true" Foreground="White"
                 IsEnabled="{Binding IsChecked, ElementName=SubstructuresCheckBox}" Content="Substructure"/>
-            <RadioButton x:Name="DualPhaseRadioButton1" Margin="2" IsChecked="false"
+            <RadioButton x:Name="DualPhaseRadioButton1" Margin="2" IsChecked="false" Foreground="White"
                 IsEnabled="{Binding IsChecked, ElementName=SubstructuresCheckBox}" Content="Dual phase" Height="20"/>
         </StackPanel>
         <Label Content="type of substructure:" HorizontalAlignment="Left" Margin="39,526,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold">
@@ -130,10 +130,10 @@
             </Label.Background>
         </Label>
         <StackPanel HorizontalAlignment="Left" Height="35" Margin="264,629,0,0" VerticalAlignment="Top" Width="120">
-            <RadioButton x:Name="BoundariesRadioButtonAll" Margin="2" IsChecked="true"
+            <RadioButton x:Name="BoundariesRadioButtonAll" Margin="2" IsChecked="true" Foreground="White"
                 IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Content="All"/>
-            <RadioButton x:Name="BoundariesRadioButtonSelect" Margin="2" IsChecked="false"
-                IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Content="Select" Height="20"/>
+            <RadioButton x:Name="BoundariesRadioButtonSelect" Margin="2" IsChecked="false" Foreground="White"
+                IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Content="Selected" Height="20"/>
         </StackPanel>
         <Button Click="Generate_Boundaries_Click" Content="Generate boundaries" HorizontalAlignment="Left" Margin="51,686,0,0" 
                 VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}"/>
@@ -142,6 +142,7 @@
         <Label Content="number of selecting grains:" HorizontalAlignment="Left" Margin="44.2,418,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Grid.Column="1"/>
         <Label x:Name="numberOfSelectingGrains" Content="0" HorizontalAlignment="Left" Margin="291.2,418,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Grid.Column="1"/>
         <Button Click="Clear_Selected_Grains_Click" Content="Clear selected grains" HorizontalAlignment="Left" Margin="130.2,471,0,0" VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" Grid.Column="1"/>
+        <Rectangle x:Name="RectangleCanvas" Grid.Column="1" Fill="White" HorizontalAlignment="Left" Height="302" Margin="44.2,95,0,0" VerticalAlignment="Top" Width="302"/>
 
 
     </Grid>
