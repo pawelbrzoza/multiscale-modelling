@@ -1,5 +1,4 @@
-﻿using grain_growth.Alghorithms;
-using grain_growth.Helpers;
+﻿using grain_growth.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -87,5 +86,11 @@ namespace grain_growth.Models
             tempRange.IsFull = false;
             return tempRange;
         }
+    }
+
+    public enum SubstructuresType
+    {
+        Substructure = -3,
+        DualPhase = -4
     }
 }

@@ -6,22 +6,21 @@ using grain_growth.Models;
 
 namespace grain_growth.Helpers
 {
-    public class InitInclusions
+    public class InitInclusions : Inclusions
     {
-        private InclusionsProperties inclusionsProperties;
+        //private Inclusions inclusionsProperties;
 
-        private Random random;
+        private readonly Random random;
 
-        public InitInclusions(InclusionsProperties inclusionsProperties)
+        public InitInclusions()
         {
-            this.inclusionsProperties = inclusionsProperties;
-            this.random = new Random();
+            random = new Random();
         }
 
         public Range AddInclusionsAtTheBegining(Range range)
         {
             Point coordinates;
-            for (int i = 0; i < inclusionsProperties.Number; i++)
+            for (int i = 0; i < Number; i++)
             {
                 do
                 {
@@ -29,7 +28,7 @@ namespace grain_growth.Helpers
                 }
                 while (range.GrainsArray[coordinates.X, coordinates.Y].Id != 0);
 
-                switch (inclusionsProperties.InclusionsType)
+                switch (InclusionsType)
                 {
                     case InclusionsType.Square:
                         AddSquareInclusion(range, coordinates);
@@ -45,15 +44,15 @@ namespace grain_growth.Helpers
         public Range AddInclusionsAfterGrainGrowth(Range range)
         {
             Point coordinates;
-            for (int inclusionNumber = 0; inclusionNumber < inclusionsProperties.Number; inclusionNumber++)
+            for (int inclusionNumber = 0; inclusionNumber < Number; inclusionNumber++)
             {
                 do
                 {
                     coordinates = InitStructure.RandomCoordinates(range.Width, range.Height, random);
                 }
-                while (!IsCoordinateOnGrainBoundaries(range, coordinates));
+                while (!Boundaries.IsOnGrainBoundaries(range, coordinates));
 
-                switch (inclusionsProperties.InclusionsType)
+                switch (InclusionsType)
                 {
                     case InclusionsType.Square:
                         AddSquareInclusion(range, coordinates);
@@ -68,7 +67,7 @@ namespace grain_growth.Helpers
 
         private void AddSquareInclusion(Range range, Point center)
         {
-            int a = (int)inclusionsProperties.Size;
+            int a = (int)Size;
             int halfA = (a / 2);
             for (int x = center.X - halfA; (x <= center.X + halfA && x < range.Width && x > 0); x++)
             {
@@ -85,7 +84,7 @@ namespace grain_growth.Helpers
 
         private void AddCirularInclusion(Range range, Point center)
         {
-            var pointsInside = GetPointsInsideCircle(inclusionsProperties.Size / 2, center);
+            var pointsInside = GetPointsInsideCircle(Size / 2, center);
             foreach (var point in pointsInside)
             {
                 if (point.X < range.Width && point.X > 0 && point.Y < range.Height && point.Y > 0)
@@ -116,29 +115,5 @@ namespace grain_growth.Helpers
             return pointsInside;
         }
 
-        private bool IsCoordinateOnGrainBoundaries(Range range, Point coordinates)
-        {
-            var centerId = range.GrainsArray[coordinates.X, coordinates.Y].Id;
-            var neighboursIds = new List<int>
-            {
-                range.GrainsArray[coordinates.X - 1, coordinates.Y].Id,
-                range.GrainsArray[coordinates.X + 1, coordinates.Y].Id,
-                range.GrainsArray[coordinates.X, coordinates.Y - 1].Id,
-                range.GrainsArray[coordinates.X, coordinates.Y + 1].Id,
-                range.GrainsArray[coordinates.X - 1, coordinates.Y - 1].Id,
-                range.GrainsArray[coordinates.X - 1, coordinates.Y + 1].Id,
-                range.GrainsArray[coordinates.X + 1, coordinates.Y - 1].Id,
-                range.GrainsArray[coordinates.X + 1, coordinates.Y + 1].Id
-            };
-
-            foreach (var neighbourId in neighboursIds)
-            {
-                if (centerId != neighbourId && !InitStructure.IsIdSpecial(neighbourId))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 }

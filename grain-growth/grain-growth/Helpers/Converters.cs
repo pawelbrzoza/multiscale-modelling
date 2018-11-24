@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
 
@@ -26,7 +25,7 @@ namespace grain_growth.Helpers
 
         public static int StringToInt(string intString)
         {
-            return (Int32.TryParse(intString, out int i) ? i : 0);
+            return (int.TryParse(intString, out int i) ? i : 0);
         }
     }
 }

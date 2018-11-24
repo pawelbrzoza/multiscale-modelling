@@ -1,4 +1,6 @@
-﻿namespace grain_growth.Models
+﻿using grain_growth.Helpers;
+
+namespace grain_growth.Models
 {
     public class MainProperties
     {
@@ -10,9 +12,9 @@
 
         public int GrowthProbability { get; set; }
 
-        public NeighbourhoodType NeighbourhoodType { get; set; }
+        public InitInclusions Inclusions { get; set; }
 
-        public InclusionsProperties Inclusions { get; set; }
+        public NeighbourhoodType NeighbourhoodType { get; set; }
 
         public SubstructuresType SubstructuresType { get; set; }
     }

@@ -10,7 +10,7 @@ namespace grain_growth.Models
 
         public Range BoundariesWithBackground { get; set; }
 
-        public Range BoundariesSelected { set; get; }
+        public Range BoundariesAllSelected { set; get; }
 
         public Range BoundariesSingleSelect { set; get; }
 
@@ -18,13 +18,12 @@ namespace grain_growth.Models
 
             ClearBoundaries = new Range(properties.RangeWidth, properties.RangeHeight);
             BoundariesWithBackground = new Range(properties.RangeWidth, properties.RangeHeight);
-            BoundariesSelected = new Range(properties.RangeWidth, properties.RangeHeight);
+            BoundariesAllSelected = new Range(properties.RangeWidth, properties.RangeHeight);
             BoundariesSingleSelect = new Range(properties.RangeWidth, properties.RangeHeight);
 
-            // border
             InitStructure.AddBlackBorder(ClearBoundaries);
             InitStructure.AddBlackBorder(BoundariesWithBackground);
-            InitStructure.AddBlackBorder(BoundariesSelected);
+            InitStructure.AddBlackBorder(BoundariesAllSelected);
             InitStructure.AddBlackBorder(BoundariesSingleSelect);
 
             // init grains array by default values
@@ -32,55 +31,43 @@ namespace grain_growth.Models
             {
                 for (int j = 1; j < properties.RangeHeight - 1; j++)
                 {
-                    if (ClearBoundaries.GrainsArray[i, j] == null)
+                    ClearBoundaries.GrainsArray[i, j] = new Grain()
                     {
-                        ClearBoundaries.GrainsArray[i, j] = new Grain()
-                        {
-                            Id = 0,
-                            Color = Color.White
-                        };
-                    }
-                    if (BoundariesWithBackground.GrainsArray[i, j] == null)
+                        Id = 0,
+                        Color = Color.White
+                    };
+                    BoundariesWithBackground.GrainsArray[i, j] = new Grain()
                     {
-                        BoundariesWithBackground.GrainsArray[i, j] = new Grain()
-                        {
-                            Id = 0,
-                            Color = Color.White
-                        };
-                    }
-                    if (BoundariesSelected.GrainsArray[i, j] == null)
+                        Id = 0,
+                        Color = Color.White
+                    };
+                    BoundariesAllSelected.GrainsArray[i, j] = new Grain()
                     {
-                        BoundariesSelected.GrainsArray[i, j] = new Grain()
-                        {
-                            Id = 0,
-                            Color = Color.White
-                        };
-                    }
-                    if (BoundariesSingleSelect.GrainsArray[i, j] == null)
+                        Id = 0,
+                        Color = Color.White
+                    };
+                    BoundariesSingleSelect.GrainsArray[i, j] = new Grain()
                     {
-                        BoundariesSingleSelect.GrainsArray[i, j] = new Grain()
-                        {
-                            Id = 0,
-                            Color = Color.White
-                        };
-                    }
+                        Id = 0,
+                        Color = Color.White
+                    };
                 }
             }
         }
 
-        public bool IsCoordinateOnGrainBoundaries(Range range, Point coordinates)
+        public static bool IsOnGrainBoundaries(Range range, Point point)
         {
-            var centerId = range.GrainsArray[coordinates.X, coordinates.Y].Id;
+            var centerId = range.GrainsArray[point.X, point.Y].Id;
             var neighboursIds = new List<int>
             {
-                range.GrainsArray[coordinates.X - 1, coordinates.Y].Id,
-                range.GrainsArray[coordinates.X + 1, coordinates.Y].Id,
-                range.GrainsArray[coordinates.X, coordinates.Y - 1].Id,
-                range.GrainsArray[coordinates.X, coordinates.Y + 1].Id,
-                range.GrainsArray[coordinates.X - 1, coordinates.Y - 1].Id,
-                range.GrainsArray[coordinates.X - 1, coordinates.Y + 1].Id,
-                range.GrainsArray[coordinates.X + 1, coordinates.Y - 1].Id,
-                range.GrainsArray[coordinates.X + 1, coordinates.Y + 1].Id
+                range.GrainsArray[point.X - 1, point.Y].Id,
+                range.GrainsArray[point.X + 1, point.Y].Id,
+                range.GrainsArray[point.X, point.Y - 1].Id,
+                range.GrainsArray[point.X, point.Y + 1].Id,
+                range.GrainsArray[point.X - 1, point.Y - 1].Id,
+                range.GrainsArray[point.X - 1, point.Y + 1].Id,
+                range.GrainsArray[point.X + 1, point.Y - 1].Id,
+                range.GrainsArray[point.X + 1, point.Y + 1].Id
             };
 
             foreach (var neighbourId in neighboursIds)
@@ -93,18 +80,18 @@ namespace grain_growth.Models
             return false;
         }
 
-        public bool IsOnGrainBoundariesColor(Range currRange, Point point, Color color)
+        public bool IsOnGrainBoundariesColor(Range range, Point point, Color color)
         {
             var neighbours = new List<Grain>
             {
-                currRange.GrainsArray[point.X - 1, point.Y],
-                currRange.GrainsArray[point.X + 1, point.Y],
-                currRange.GrainsArray[point.X, point.Y - 1],
-                currRange.GrainsArray[point.X, point.Y + 1],
-                currRange.GrainsArray[point.X - 1, point.Y - 1],
-                currRange.GrainsArray[point.X - 1, point.Y + 1],
-                currRange.GrainsArray[point.X + 1, point.Y - 1],
-                currRange.GrainsArray[point.X + 1, point.Y + 1]
+                range.GrainsArray[point.X - 1, point.Y],
+                range.GrainsArray[point.X + 1, point.Y],
+                range.GrainsArray[point.X, point.Y - 1],
+                range.GrainsArray[point.X, point.Y + 1],
+                range.GrainsArray[point.X - 1, point.Y - 1],
+                range.GrainsArray[point.X - 1, point.Y + 1],
+                range.GrainsArray[point.X + 1, point.Y - 1],
+                range.GrainsArray[point.X + 1, point.Y + 1]
             };
 
             foreach (var neighbour in neighbours)

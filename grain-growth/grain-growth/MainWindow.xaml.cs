@@ -30,15 +30,17 @@ namespace grain_growth
             InitializeComponent();
 
             // initialize structure updates
-            dispatcher = new DispatcherTimer();
-            dispatcher.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            dispatcher.Tick += dispatcher_Tick;
+            dispatcher = new DispatcherTimer
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, 1)
+            };
+            dispatcher.Tick += Dispatcher_Tick;
 
             ca = new CelularAutomata();
             currRange = new Range();
 
-            Substructures.SubstrListPoints = new System.Collections.Generic.List<System.Drawing.Point>();
-            Substructures.SubstrGrainList = new System.Collections.Generic.List<Grain>();
+            Substructures.SubstrListPoints = new List<System.Drawing.Point>();
+            Substructures.SubstrGrainList = new List<Grain>();
 
             SetProperties();
         }
@@ -52,7 +54,7 @@ namespace grain_growth
                 NumberOfGrains = Converters.StringToInt(NumOfGrainsTextBox.Text),
                 NeighbourhoodType = ChooseNeighbourhoodType(),
                 GrowthProbability = Converters.StringToInt(GrowthProbabilityTextBox.Text),
-                Inclusions = new InclusionsProperties()
+                Inclusions = new InitInclusions()
                 {
                     CreationTime = ChooseCreationTime(),
                     InclusionsType = ChooseInclusionsType(),
@@ -66,7 +68,7 @@ namespace grain_growth
             boundaries = new Boundaries(properties);
         }
 
-        private void dispatcher_Tick(object sender, EventArgs e)
+        private void Dispatcher_Tick(object sender, EventArgs e)
         {
             currRange = ca.Grow(properties.NeighbourhoodType, prevRange, properties.GrowthProbability);
             prevRange = currRange;
@@ -85,6 +87,7 @@ namespace grain_growth
         private void Play_Button_Click(object sender, RoutedEventArgs e)
         {
             RectangleCanvas.Visibility = Visibility.Hidden;
+
             if (Substructures.SubstrListPoints.Count > 0)
             {
                 SetProperties();
@@ -95,6 +98,8 @@ namespace grain_growth
             {
                 SetProperties();
                 prevRange = InitStructure.InitializeStructure(properties);
+                if (properties.Inclusions.CreationTime == InclusionsCreationTime.Begin)
+                    prevRange = properties.Inclusions.AddInclusionsAtTheBegining(prevRange);
                 dispatcher.Start();
             }
         }
@@ -107,7 +112,7 @@ namespace grain_growth
                 {
                     for (int j = 1; j < currRange.Height - 1; j++)
                     {
-                        if (boundaries.IsCoordinateOnGrainBoundaries(currRange, new System.Drawing.Point(i, j)))
+                        if (Boundaries.IsOnGrainBoundaries(currRange, new System.Drawing.Point(i, j)))
                         {
                             boundaries.BoundariesWithBackground.GrainsArray[i, j].Color = Color.Black;
                             boundaries.BoundariesWithBackground.GrainsArray[i, j].Id = -1;
@@ -120,8 +125,8 @@ namespace grain_growth
                         }
                     }
                 }
-                CelularAutomata.updateBitmap(boundaries.BoundariesWithBackground);
-                CelularAutomata.updateGrainsArray(boundaries.BoundariesWithBackground);
+                CelularAutomata.UpdateBitmap(boundaries.BoundariesWithBackground);
+                CelularAutomata.UpdateGrainsArray(boundaries.BoundariesWithBackground);
                 currRange = boundaries.BoundariesWithBackground;
                
                 Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
@@ -129,7 +134,7 @@ namespace grain_growth
             }
             else
             {
-                boundaries.BoundariesSelected = currRange;
+                boundaries.BoundariesAllSelected = currRange;
                 foreach(var point in Substructures.SubstrListPoints)
                 {
                     var color = currRange.StructureBitmap.GetPixel(point.X, point.Y);
@@ -142,16 +147,16 @@ namespace grain_growth
                         {
                             if (boundaries.BoundariesSingleSelect.GrainsArray[i, j].Color == Color.Black)
                             {
-                                boundaries.BoundariesSelected.GrainsArray[i, j] = boundaries.BoundariesSingleSelect.GrainsArray[i, j];
+                                boundaries.BoundariesAllSelected.GrainsArray[i, j] = boundaries.BoundariesSingleSelect.GrainsArray[i, j];
                                 boundaries.ClearBoundaries.GrainsArray[i,j] = boundaries.BoundariesSingleSelect.GrainsArray[i, j];
                             }
                         }
                     }
                 }
-                CelularAutomata.updateBitmap(boundaries.BoundariesSelected);
-                CelularAutomata.updateGrainsArray(boundaries.BoundariesSelected);
+                CelularAutomata.UpdateBitmap(boundaries.BoundariesAllSelected);
+                CelularAutomata.UpdateGrainsArray(boundaries.BoundariesAllSelected);
 
-                currRange = boundaries.BoundariesSelected;
+                currRange = boundaries.BoundariesAllSelected;
 
                 Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
             }
@@ -159,12 +164,12 @@ namespace grain_growth
 
         private void Clear_Content_Click(object sender, RoutedEventArgs e)
         {
-            CelularAutomata.updateBitmap(boundaries.ClearBoundaries);
-            CelularAutomata.updateGrainsArray(boundaries.ClearBoundaries);
+            CelularAutomata.UpdateBitmap(boundaries.ClearBoundaries);
+            CelularAutomata.UpdateGrainsArray(boundaries.ClearBoundaries);
 
             currRange = boundaries.ClearBoundaries;
-            CelularAutomata.updateBitmap(currRange);
-            CelularAutomata.updateGrainsArray(currRange);
+            CelularAutomata.UpdateBitmap(currRange);
+            CelularAutomata.UpdateGrainsArray(currRange);
 
             Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
             Clear_Selected_Grains_Click(sender, e);
@@ -202,7 +207,7 @@ namespace grain_growth
                     }
                 }
             }
-            CelularAutomata.updateBitmap(boundaries.BoundariesSingleSelect);
+            CelularAutomata.UpdateBitmap(boundaries.BoundariesSingleSelect);
         }
 
         private void ImportBitmap_Click(object sender, RoutedEventArgs e)
@@ -221,8 +226,8 @@ namespace grain_growth
                 Image.Source = Converters.BitmapToImageSource(new Bitmap(openfiledialog.FileName));
                 currRange.StructureBitmap = new Bitmap(openfiledialog.FileName);
                 
-                CelularAutomata.updateGrainsArray(currRange);
-                CelularAutomata.updateBitmap(currRange);
+                CelularAutomata.UpdateGrainsArray(currRange);
+                CelularAutomata.UpdateBitmap(currRange);
             }
 
             dispatcher.Stop();
@@ -246,8 +251,8 @@ namespace grain_growth
                 Image.Source = Converters.BitmapToImageSource(new Bitmap(openfiledialog.FileName));
                 currRange.StructureBitmap = new Bitmap(openfiledialog.FileName);
 
-                CelularAutomata.updateGrainsArray(currRange);
-                CelularAutomata.updateBitmap(currRange);
+                CelularAutomata.UpdateGrainsArray(currRange);
+                CelularAutomata.UpdateBitmap(currRange);
             }
 
             dispatcher.Stop();
@@ -291,7 +296,7 @@ namespace grain_growth
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         private void AddInclusionsButton_Click(object sender, RoutedEventArgs e)
@@ -302,10 +307,9 @@ namespace grain_growth
                 currRange.IsFull = true;
                 if (properties.Inclusions.IsEnable && (properties.Inclusions.CreationTime == InclusionsCreationTime.After))
                 {
-                    var inclusions = new InitInclusions(properties.Inclusions);
-                    CelularAutomata.updateGrainsArray(currRange);
-                    currRange = inclusions.AddInclusionsAfterGrainGrowth(currRange);
-                    CelularAutomata.updateBitmap(currRange);
+                    CelularAutomata.UpdateGrainsArray(currRange);
+                    currRange =  properties.Inclusions.AddInclusionsAfterGrainGrowth(currRange);
+                    CelularAutomata.UpdateBitmap(currRange);
                     currRange.IsFull = true;
                     prevRange = currRange;
                     Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);

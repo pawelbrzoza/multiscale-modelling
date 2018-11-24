@@ -38,13 +38,6 @@ namespace grain_growth.Helpers
 
             tempRange.StructureBitmap = new Bitmap(properties.RangeWidth, properties.RangeHeight);
 
-            // inclusions at the beginning
-            if (properties.Inclusions.IsEnable && (properties.Inclusions.CreationTime == InclusionsCreationTime.Begin))
-            {
-                InitInclusions inclusions = new InitInclusions(properties.Inclusions);
-                tempRange = inclusions.AddInclusionsAtTheBegining(tempRange);
-            }
-
             Point coordinates;
             // set random starting coordinates [x,y] and color for grains 
             for (int grainNumber = 1; grainNumber <= properties.NumberOfGrains; grainNumber++)

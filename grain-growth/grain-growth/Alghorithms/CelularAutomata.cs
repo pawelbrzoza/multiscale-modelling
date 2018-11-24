@@ -10,11 +10,11 @@ namespace grain_growth.Alghorithms
 {
     public class CelularAutomata
     {
-        private Random random { get; set; }
+        private Random Random { get; set; }
 
         public CelularAutomata()
         {
-            this.random =  new Random();
+            this.Random =  new Random();
         }
         
         public Range Grow(NeighbourhoodType neighbourhoodType, Range prevRange, int growthProbability)
@@ -134,7 +134,7 @@ namespace grain_growth.Alghorithms
                                         most = neighbourhood.Where(g => (!InitStructure.IsIdSpecial(g.Id)))
                                                             .GroupBy(g => g.Id);
 
-                                        var randomProbability = random.Next(0, 100);
+                                        var randomProbability = Random.Next(0, 100);
                                         if (most.Any() && (randomProbability <= growthProbability))
                                         {
                                             currRange.GrainsArray[i, j] = most.OrderByDescending(g => g.Count())
@@ -158,7 +158,7 @@ namespace grain_growth.Alghorithms
                     }
                 }
             }
-            updateBitmap(currRange);
+            UpdateBitmap(currRange);
             Substructures.SubstrListPoints = new List<Point>();
             return currRange;
         }
@@ -216,7 +216,7 @@ namespace grain_growth.Alghorithms
             return neighbourhood;
         }
 
-        public static void updateBitmap(Range range)
+        public static void UpdateBitmap(Range range)
         {
             // setting bitmap colors form grains array
             for (int i = 0; i < range.Width; i++)
@@ -224,7 +224,7 @@ namespace grain_growth.Alghorithms
                     range.StructureBitmap.SetPixel(i, j, range.GrainsArray[i, j].Color);
         }
 
-        public static void updateGrainsArray(Range range)
+        public static void UpdateGrainsArray(Range range)
         {
             range.GrainsArray = new Grain[range.Width, range.Height];
 
