@@ -8,6 +8,8 @@ namespace grain_growth.Helpers
 {
     public class InitStructure
     {
+        static public Grain[] grainArr;
+
         public static Range InitializeStructure(MainProperties properties)
         {
             Random random = new Random();
@@ -20,7 +22,7 @@ namespace grain_growth.Helpers
             // border
             AddBlackBorder(tempRange);
 
-            // init grains array by default values
+            // init grains array by white color (default)
             for (int i = 1; i < tempRange.Width - 1; i++)
             {
                 for (int j = 1; j < tempRange.Height - 1; j++)
@@ -52,6 +54,48 @@ namespace grain_growth.Helpers
                 tempRange.GrainsArray[coordinates.X, coordinates.Y].Id = grainNumber;
 
             }
+            return tempRange;
+        }
+
+        static public Range InitMonteCarlo( MainProperties properties)
+        {
+            Range tempRange = new Range(properties.RangeWidth, properties.RangeHeight);
+
+            tempRange.IsFull = false;
+
+            // border
+            AddBlackBorder(tempRange);
+
+            Random random = new Random();
+            grainArr = new Grain[properties.NumberOfGrains];
+
+            //Point coordinates;
+            // set random starting coordinates [x,y] and color for grains 
+            for (int grainNumber = 1; grainNumber <= properties.NumberOfGrains; grainNumber++)
+            {
+                grainArr[grainNumber - 1] = new Grain()
+                {
+                    Color = Color.FromArgb(random.Next(10, 240), random.Next(10, 240), random.Next(2, 240)),
+                    Id = grainNumber
+                }; 
+            }
+
+            for (int i = 1; i < tempRange.Width - 1; i++)
+            {
+                for (int j = 1; j < tempRange.Height - 1; j++)
+                {
+                    int r = random.Next(grainArr.Length);
+                    tempRange.GrainsArray[i, j] = new Grain()
+                    {
+                        Id = grainArr[r].Id,
+                        Color = grainArr[r].Color
+                    };
+
+                }
+            }
+
+            tempRange.StructureBitmap = new Bitmap(properties.RangeWidth, properties.RangeHeight);
+
             return tempRange;
         }
 

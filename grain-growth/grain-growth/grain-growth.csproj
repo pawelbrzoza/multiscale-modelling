@@ -76,6 +76,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Alghorithms\CelularAutomata.cs" />
+    <Compile Include="Alghorithms\MonteCarlo.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

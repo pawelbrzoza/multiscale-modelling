@@ -6,6 +6,8 @@ namespace grain_growth.Models
     {
         public int NumberOfGrains { get; set; }
 
+        public int MCS { get; set; }
+
         public int RangeWidth { get; set; }
 
         public int RangeHeight { get; set; }
