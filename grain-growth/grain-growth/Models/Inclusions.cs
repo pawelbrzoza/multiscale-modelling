@@ -1,10 +1,11 @@
-﻿namespace grain_growth.Models
+﻿
+namespace grain_growth.Models
 { 
     public class Inclusions
     {
         public bool IsEnable { get; set; }
 
-        public int Number { get; set; }
+        public int AmountOfInclusions { get; set; }
 
         public int Size { get; set; }
 

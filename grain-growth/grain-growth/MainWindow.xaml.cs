@@ -21,10 +21,14 @@ namespace grain_growth
     {
         private MainProperties properties;
         private DispatcherTimer dispatcher;
-        private CelularAutomata ca;
-        private MonteCarlo ma;
         private Range prevRange, currRange;
-        private Boundaries boundaries;
+        private CellularAutomata ca;
+        private MonteCarlo mc;
+        private InitInclusions inclusions;
+        private InitSubstructures substructures;
+        private InitBoundaries boundaries;
+        private InitNucleons nucleons;
+        private int tempIteration;
 
         public MainWindow()
         {
@@ -37,12 +41,12 @@ namespace grain_growth
             };
             dispatcher.Tick += Dispatcher_Tick;
 
-            ca = new CelularAutomata();
-            ma = new MonteCarlo();
+            substructures = new InitSubstructures();
+            ca = new CellularAutomata();
+            mc = new MonteCarlo();
             currRange = new Range();
 
-            Substructures.SubstrListPoints = new List<System.Drawing.Point>();
-            Substructures.SubstrGrainList = new List<Grain>();
+            Substructures.SubStrucrtuePointsList = new List<System.Drawing.Point>();
 
             SetProperties();
         }
@@ -53,89 +57,158 @@ namespace grain_growth
             {
                 RangeWidth = (int)Image.Width,
                 RangeHeight = (int)Image.Height,
-                NumberOfGrains = Converters.StringToInt(NumOfGrainsTextBox.Text),
+                AmountOfGrains = Converters.StringToInt(NumOfGrainsTextBox.Text),
                 NeighbourhoodType = ChooseNeighbourhoodType(),
                 GrowthProbability = Converters.StringToInt(GrowthProbabilityTextBox.Text),
                 MCS = Converters.StringToInt(MCSTextBox.Text),
-                Inclusions = new InitInclusions()
-                {
-                    CreationTime = ChooseCreationTime(),
-                    InclusionsType = ChooseInclusionsType(),
-                    IsEnable = (bool)InclusionsCheckBox.IsChecked,
-                    Number = Converters.StringToInt(NumOfInclusionsTextBox.Text),
-                    Size = Converters.StringToInt(SizeOfInclusionsTextBox.Text),
-                },
                 SubstructuresType = ChooseSubstructuresType()
             };
-            MonteCarlo.MCS_local = properties.MCS;
-            boundaries = new Boundaries(properties);
+            inclusions = new InitInclusions()
+            {
+                CreationTime = ChooseInlcusionCreationTime(),
+                InclusionsType = ChooseInclusionsType(),
+                IsEnable = (bool)InclusionsCheckBox.IsChecked,
+                AmountOfInclusions = Converters.StringToInt(NumOfInclusionsTextBox.Text),
+                Size = Converters.StringToInt(SizeOfInclusionsTextBox.Text)
+            };
+            boundaries = new InitBoundaries(properties);
+            nucleons = new InitNucleons()
+            {
+                IsEnable = (bool)SRXCheckBox.IsChecked,
+                AmountOfNucleons = Converters.StringToInt(NumOfNucleonsTextBox.Text),
+                TypeOfcreation = ChooseTypeOfNucleonsCreation(),
+                EnergyDistribution = ChooseEnegryDistribution(),
+                EnergyInside = Converters.StringToInt(EnergyInside.Text),
+                EnergyOnEdges = Converters.StringToInt(EnergyOnEdges.Text)
+            };
+            tempIteration = Converters.StringToInt(MCSTextBox.Text);
         }
 
         private void Dispatcher_Tick(object sender, EventArgs e)
         {
-            if(MonteCarloRadioButton.IsChecked == true)
-                currRange = ma.Grow(prevRange, properties);
+            if (MonteCarloRadioButton.IsChecked == true)
+            {
+                if(nucleons.TypeOfcreation == TypeOfNucleonsCreation.Constant){
+                    prevRange = nucleons.InitializeNucleons(currRange, nucleons);
+                }
+                else if(nucleons.TypeOfcreation == TypeOfNucleonsCreation.Increasing)
+                {
+                    nucleons.AmountOfNucleons += tempIteration;
+                    prevRange = nucleons.InitializeNucleons(currRange, nucleons);
+                }
+
+                currRange = mc.Grow(prevRange, nucleons);
+                if (properties.MCS <= 0)
+                {
+                    if (AfterInclusionRadioButton.IsChecked == true && InclusionsCheckBox.IsChecked == true)
+                        AddInclusionsButton_Click(new object(), new RoutedEventArgs());
+
+                    SetEnableSubStrAndBoundCheckBoxs();
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Mouse.OverrideCursor = null;
+                    });
+                    currRange.IsFull = true;
+                    dispatcher.Stop();
+                }
+                properties.MCS--;
+            }
             else
+            {
                 currRange = ca.Grow(properties.NeighbourhoodType, prevRange, properties.GrowthProbability);
+                if (currRange.IsFull)
+                {
+                    if (AfterInclusionRadioButton.IsChecked == true && InclusionsCheckBox.IsChecked == true)
+                        AddInclusionsButton_Click(new object(), new RoutedEventArgs());
+
+                    SetEnableSubStrAndBoundCheckBoxs();
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Mouse.OverrideCursor = null;
+                    });
+                    dispatcher.Stop();
+                }
+            }
 
             prevRange = currRange;
             Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
-
-            if (currRange.IsFull)
-            {
-                if (AfterInclusionRadioButton.IsChecked == true && InclusionsCheckBox.IsChecked == true)
-                    AddInclusionsButton_Click(new object(), new RoutedEventArgs());
-
-                SubstrAndBoundCheckBoxs_Checked();
-                dispatcher.Stop();
-            }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SRX_Button_Click(object sender, RoutedEventArgs e)
         {
-            SetProperties();
-            CelularAutomata.UpdateGrainsArray(currRange);
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                });
 
-            if (MonteCarloRadioButton.IsEnabled)
-                currRange = ma.Grow(prevRange, properties);
+                SetProperties();
 
-            CelularAutomata.UpdateBitmap(currRange);
+                CellularAutomata.UpdateGrainsArray(currRange);
+                prevRange = nucleons.InitializeNucleons(currRange, nucleons);
+                prevRange = nucleons.EnergyDistributor(currRange, nucleons);
 
-            prevRange = currRange;
-            Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
+                Image.Source = Converters.BitmapToImageSource(prevRange.StructureBitmap);
+                dispatcher.Start();
+            }
+            catch (Exception)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Mouse.OverrideCursor = null;
+                });
+            }
         }
 
         private void Play_Button_Click(object sender, RoutedEventArgs e)
         {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+            });
             RectangleCanvas.Visibility = Visibility.Hidden;
 
-            if (Substructures.SubstrListPoints.Count > 0)
+            if (Substructures.SubStrucrtuePointsList.Count > 0)
             {
                 SetProperties();
-                
 
                 if(MonteCarloRadioButton.IsChecked == true)
-                    prevRange = Substructures.UpdateSubstructuresMC(currRange, properties);
+                    prevRange = substructures.UpdateSubstructuresMC(currRange, properties);
                 else
-                {
-                    prevRange = Substructures.UpdateSubstructures(currRange, properties);
-                }
-
-                dispatcher.Start();
+                    prevRange = substructures.UpdateSubstructuresCA(currRange, properties);
             }
             else
             {
                 SetProperties();
 
                 if (MonteCarloRadioButton.IsChecked == true)
-                    prevRange = InitStructure.InitMonteCarlo(properties);
+                {
+                    prevRange = InitStructures.InitMonteCarlo(properties);
+                    SRXCheckBox.IsChecked = false;
+                    nucleons.IsEnable = false;
+                }
                 else
                 {
-                    prevRange = InitStructure.InitializeStructure(properties);
+                    prevRange = InitStructures.InitCellularAutomata(properties);
 
-                    if (properties.Inclusions.CreationTime == InclusionsCreationTime.Begin && InclusionsCheckBox.IsChecked == true)
-                        prevRange = properties.Inclusions.AddInclusionsAtTheBegining(prevRange);
+                    if (inclusions.CreationTime == InclusionsCreationTime.Begin && InclusionsCheckBox.IsChecked == true)
+                        prevRange = inclusions.AddInclusionsAtTheBegining(prevRange);
                 }
+            }
+            dispatcher.Start();
+        }
+
+        private void Add_MCS_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(prevRange != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                });
+
+                SetProperties();
                 dispatcher.Start();
             }
         }
@@ -144,69 +217,23 @@ namespace grain_growth
         {
             if(BoundariesRadioButtonAll.IsChecked == true)
             {
-                for (int i = 1; i < currRange.Width - 1; i++)
-                {
-                    for (int j = 1; j < currRange.Height - 1; j++)
-                    {
-                        if (Boundaries.IsOnGrainBoundaries(currRange, new System.Drawing.Point(i, j)))
-                        {
-                            boundaries.BoundariesWithBackground.GrainsArray[i, j].Color = Color.Black;
-                            boundaries.BoundariesWithBackground.GrainsArray[i, j].Id = -1;
-                            boundaries.ClearBoundaries.GrainsArray[i, j] = boundaries.BoundariesWithBackground.GrainsArray[i, j];
-                        }
-                        else
-                        {
-                            boundaries.BoundariesWithBackground.GrainsArray[i, j].Color = currRange.GrainsArray[i, j].Color;
-                            boundaries.BoundariesWithBackground.GrainsArray[i, j].Id = currRange.GrainsArray[i, j].Id;
-                        }
-                    }
-                }
-                CelularAutomata.UpdateBitmap(boundaries.BoundariesWithBackground);
-                CelularAutomata.UpdateGrainsArray(boundaries.BoundariesWithBackground);
-                currRange = boundaries.BoundariesWithBackground;
-               
+                boundaries.GenerateBoundariesAll(currRange);
+                currRange = boundaries.BoundariesAll;
                 Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
                 Clear_Selected_Grains_Click(sender, e);
             }
             else
             {
-                boundaries.BoundariesAllSelected = currRange;
-                foreach(var point in Substructures.SubstrListPoints)
-                {
-                    var color = currRange.StructureBitmap.GetPixel(point.X, point.Y);
-
-                    DrawSingleSelect(color);
-
-                    for (int i = 1; i < boundaries.BoundariesSingleSelect.Width - 1; i++)
-                    {
-                        for (int j = 1; j < boundaries.BoundariesSingleSelect.Height - 1; j++)
-                        {
-                            if (boundaries.BoundariesSingleSelect.GrainsArray[i, j].Color == Color.Black)
-                            {
-                                boundaries.BoundariesAllSelected.GrainsArray[i, j] = boundaries.BoundariesSingleSelect.GrainsArray[i, j];
-                                boundaries.ClearBoundaries.GrainsArray[i,j] = boundaries.BoundariesSingleSelect.GrainsArray[i, j];
-                            }
-                        }
-                    }
-                }
-                CelularAutomata.UpdateBitmap(boundaries.BoundariesAllSelected);
-                CelularAutomata.UpdateGrainsArray(boundaries.BoundariesAllSelected);
-
-                currRange = boundaries.BoundariesAllSelected;
-
+                boundaries.GenerateBoundariesSelected(currRange);
+                currRange = boundaries.BoundariesSelected;
                 Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
             }
         }
 
         private void Clear_Content_Click(object sender, RoutedEventArgs e)
         {
-            CelularAutomata.UpdateBitmap(boundaries.ClearBoundaries);
-            CelularAutomata.UpdateGrainsArray(boundaries.ClearBoundaries);
-
+            CellularAutomata.UpdateBitmap(boundaries.ClearBoundaries);
             currRange = boundaries.ClearBoundaries;
-            CelularAutomata.UpdateBitmap(currRange);
-            CelularAutomata.UpdateGrainsArray(currRange);
-
             Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
             Clear_Selected_Grains_Click(sender, e);
         }
@@ -214,43 +241,21 @@ namespace grain_growth
         private void Image_Click(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Point point = e.GetPosition(Image);
-            Substructures.SubstrListPoints.Add(new System.Drawing.Point { X = (int)point.X, Y = (int)point.Y });
+            Substructures.SubStrucrtuePointsList.Add(new System.Drawing.Point { X = (int)point.X, Y = (int)point.Y });
 
             var color = currRange.StructureBitmap.GetPixel((int)point.X, (int)point.Y);
 
-            DrawSingleSelect(color);
+            boundaries.DrawSingleSelect(currRange, color);
             Image.Source = Converters.BitmapToImageSource(boundaries.BoundariesSingleSelect.StructureBitmap);
 
-            numberOfSelectingGrains.Content = Substructures.SubstrListPoints.Count;
-        }
-
-        private void DrawSingleSelect(Color color)
-        {
-            for (int i = 1; i < currRange.Width - 1; i++)
-            {
-                for (int j = 1; j < currRange.Height - 1; j++)
-                {
-                    if (boundaries.IsOnGrainBoundariesColor(currRange, new System.Drawing.Point(i, j), color) &&
-                        currRange.GrainsArray[i, j].Color != color)
-                    {
-                        boundaries.BoundariesSingleSelect.GrainsArray[i, j].Color = Color.Black;
-                        boundaries.BoundariesSingleSelect.GrainsArray[i, j].Id = -1;
-                    }
-                    else
-                    {
-                        boundaries.BoundariesSingleSelect.GrainsArray[i, j].Color = currRange.GrainsArray[i, j].Color;
-                        boundaries.BoundariesSingleSelect.GrainsArray[i, j].Id = currRange.GrainsArray[i, j].Id;
-                    }
-                }
-            }
-            CelularAutomata.UpdateBitmap(boundaries.BoundariesSingleSelect);
+            numberOfSelectingGrains.Content = Substructures.SubStrucrtuePointsList.Count;
         }
 
         private void ImportBitmap_Click(object sender, RoutedEventArgs e)
         {
             RectangleCanvas.Visibility = Visibility.Hidden;
             currRange = new Range();
-            currRange = InitStructure.InitializeStructure(properties);
+            currRange = InitStructures.InitCellularAutomata(properties);
             SetProperties();
             OpenFileDialog openfiledialog = new OpenFileDialog();
 
@@ -262,20 +267,20 @@ namespace grain_growth
                 Image.Source = Converters.BitmapToImageSource(new Bitmap(openfiledialog.FileName));
                 currRange.StructureBitmap = new Bitmap(openfiledialog.FileName);
                 
-                CelularAutomata.UpdateGrainsArray(currRange);
-                CelularAutomata.UpdateBitmap(currRange);
+                CellularAutomata.UpdateGrainsArray(currRange);
+                CellularAutomata.UpdateBitmap(currRange);
             }
 
             dispatcher.Stop();
             Clear_Selected_Grains_Click(sender, e);
-            SubstrAndBoundCheckBoxs_Checked();
+            SetEnableSubStrAndBoundCheckBoxs();
         }
 
         private void ImportTXT_Click(object sender, RoutedEventArgs e)
         {
             RectangleCanvas.Visibility = Visibility.Hidden;
             currRange = new Range();
-            currRange = InitStructure.InitializeStructure(properties);
+            currRange = InitStructures.InitCellularAutomata(properties);
             SetProperties();
             OpenFileDialog openfiledialog = new OpenFileDialog();
 
@@ -287,13 +292,13 @@ namespace grain_growth
                 Image.Source = Converters.BitmapToImageSource(new Bitmap(openfiledialog.FileName));
                 currRange.StructureBitmap = new Bitmap(openfiledialog.FileName);
 
-                CelularAutomata.UpdateGrainsArray(currRange);
-                CelularAutomata.UpdateBitmap(currRange);
+                CellularAutomata.UpdateGrainsArray(currRange);
+                CellularAutomata.UpdateBitmap(currRange);
             }
 
             dispatcher.Stop();
             Clear_Selected_Grains_Click(sender, e);
-            SubstrAndBoundCheckBoxs_Checked();
+            SetEnableSubStrAndBoundCheckBoxs();
         }
 
         private void ExportBitmap_Click(object sender, RoutedEventArgs e)
@@ -341,12 +346,11 @@ namespace grain_growth
             {
                 SetProperties();
                 currRange.IsFull = true;
-                if (properties.Inclusions.IsEnable && (properties.Inclusions.CreationTime == InclusionsCreationTime.After))
+                if (inclusions.IsEnable && (inclusions.CreationTime == InclusionsCreationTime.After))
                 {
-                    CelularAutomata.UpdateGrainsArray(currRange);
-                    currRange =  properties.Inclusions.AddInclusionsAfterGrainGrowth(currRange);
-                    CelularAutomata.UpdateBitmap(currRange);
-                    currRange.IsFull = true;
+                    CellularAutomata.UpdateGrainsArray(currRange);
+                    currRange =  inclusions.AddInclusionsAfter(currRange);
+                    CellularAutomata.UpdateBitmap(currRange);
                     prevRange = currRange;
                     Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
                 }
@@ -354,23 +358,13 @@ namespace grain_growth
             catch (Exception) { }
         }
 
-        private void AfterInclusionRadioButton_Click(object sender, RoutedEventArgs e)
-        {
-            AddInclusionsButton.IsEnabled = (bool)AfterInclusionRadioButton.IsChecked;
-        }
-
-        private void BeginInclusionRadioButton_Click(object sender, RoutedEventArgs e)
-        {
-            AddInclusionsButton.IsEnabled = (bool)AfterInclusionRadioButton.IsChecked;
-        }
-
         private void Clear_Selected_Grains_Click(object sender, RoutedEventArgs e)
         {
-            Substructures.SubstrListPoints.Clear();
-            numberOfSelectingGrains.Content = Substructures.SubstrListPoints.Count;
+            Substructures.SubStrucrtuePointsList.Clear();
+            numberOfSelectingGrains.Content = Substructures.SubStrucrtuePointsList.Count;
         }
 
-        private void SubstrAndBoundCheckBoxs_Checked()
+        private void SetEnableSubStrAndBoundCheckBoxs()
         {
             if (currRange != null)
             {
@@ -395,7 +389,7 @@ namespace grain_growth
             }
         }
 
-        private InclusionsCreationTime ChooseCreationTime()
+        private InclusionsCreationTime ChooseInlcusionCreationTime()
         {
             if (BeginInclusionRadioButton.IsChecked == true)
             {
@@ -416,6 +410,34 @@ namespace grain_growth
             else
             {
                 return InclusionsType.Circular;
+            }
+        }
+
+        private TypeOfNucleonsCreation ChooseTypeOfNucleonsCreation()
+        {
+            if (ConstantRadioButton_SRX.IsChecked == true)
+            {
+                return TypeOfNucleonsCreation.Constant;
+            }
+            else if (IncreasingRadioButton_SRX.IsChecked == true)
+            {
+                return TypeOfNucleonsCreation.Increasing;
+            }
+            else
+            {
+                return TypeOfNucleonsCreation.AtTheBeginning;
+            }
+        }
+
+        private EnergyDistribution ChooseEnegryDistribution()
+        {
+            if (HomogenousRadioButton_SRX.IsChecked == true)
+            {
+                return EnergyDistribution.Homogenous;
+            }
+            else
+            {
+                return EnergyDistribution.Heterogenous;
             }
         }
 

@@ -2,26 +2,20 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
-
 using grain_growth.Helpers;
 using grain_growth.Models;
 
 namespace grain_growth.Alghorithms
 {
-    public class CelularAutomata
+    public class CellularAutomata
     {
-        private Random Random { get; set; }
-
-        public CelularAutomata()
-        {
-            this.Random =  new Random();
-        }
+        private Random Random = new Random();
         
         public Range Grow(NeighbourhoodType neighbourhoodType, Range prevRange, int growthProbability)
         {
             var currRange = new Range(prevRange.Width, prevRange.Height, true);
             
-            InitStructure.AddBlackBorder(currRange);
+            InitStructures.AddBlackBorder(currRange);
 
             var isGrowthMoore2 = neighbourhoodType == NeighbourhoodType.Moore2 ? true : false;
 
@@ -33,7 +27,7 @@ namespace grain_growth.Alghorithms
                 {
                     if (prevRange.GrainsArray[i, j].Id != 0)
                     {
-                        // if there is already some not white color just init
+                        // just init if there is already some color (not white)
                         currRange.GrainsArray[i, j] = prevRange.GrainsArray[i, j];
                     }
                     else if (prevRange.GrainsArray[i, j].Id == 0)
@@ -51,7 +45,7 @@ namespace grain_growth.Alghorithms
                                     break;
                             }
 
-                            var most = neighbourhood.Where(g => (!InitStructure.IsIdSpecial(g.Id)))
+                            var most = neighbourhood.Where(g => (!SpecialId.IsIdSpecial(g.Id)))
                                                     .GroupBy(g => g.Id);
 
                             if (most.Any())
@@ -79,7 +73,7 @@ namespace grain_growth.Alghorithms
                             // rule 1 - ordinary moore
                             neighbourhood = TakeMooreNeighbourhood(i, j, prevRange.GrainsArray);
 
-                            var most = neighbourhood.Where(g => (!InitStructure.IsIdSpecial(g.Id)))
+                            var most = neighbourhood.Where(g => (!SpecialId.IsIdSpecial(g.Id)))
                                                     .GroupBy(g => g.Id);
                             
                             if (most.Any())
@@ -96,7 +90,7 @@ namespace grain_growth.Alghorithms
                                     // rule 2 - nearest moore
                                     neighbourhood = TakeNearestMooreNeighbourhood(i, j, prevRange.GrainsArray);
 
-                                    most = neighbourhood.Where(g => (!InitStructure.IsIdSpecial(g.Id)))
+                                    most = neighbourhood.Where(g => (!SpecialId.IsIdSpecial(g.Id)))
                                                         .GroupBy(g => g.Id);
 
                                     if (most.Any())
@@ -113,7 +107,7 @@ namespace grain_growth.Alghorithms
                                         // rule 3 - further moore
                                         neighbourhood = TakeFurtherMooreNeighbourhood(i, j, prevRange.GrainsArray);
 
-                                        most = neighbourhood.Where(g => (!InitStructure.IsIdSpecial(g.Id)))
+                                        most = neighbourhood.Where(g => (!SpecialId.IsIdSpecial(g.Id)))
                                                             .GroupBy(g => g.Id);
 
                                         if (most.Any())
@@ -131,7 +125,7 @@ namespace grain_growth.Alghorithms
                                         // rule 4 - ordinary moore with probability
                                         neighbourhood = TakeMooreNeighbourhood(i, j, prevRange.GrainsArray);
 
-                                        most = neighbourhood.Where(g => (!InitStructure.IsIdSpecial(g.Id)))
+                                        most = neighbourhood.Where(g => (!SpecialId.IsIdSpecial(g.Id)))
                                                             .GroupBy(g => g.Id);
 
                                         var randomProbability = Random.Next(0, 100);
@@ -159,7 +153,7 @@ namespace grain_growth.Alghorithms
                 }
             }
             UpdateBitmap(currRange);
-            Substructures.SubstrListPoints = new List<Point>();
+            Substructures.SubStrucrtuePointsList = new List<Point>();
             return currRange;
         }
 
@@ -230,7 +224,7 @@ namespace grain_growth.Alghorithms
 
             Dictionary<Color, int> grainIds = new Dictionary<Color, int>
             {
-                { Color.FromArgb(0, 0, 0), -1 },
+                { Color.FromArgb(0, 0, 0), 0 },
             };
 
             if (range.StructureBitmap != null)
@@ -243,7 +237,7 @@ namespace grain_growth.Alghorithms
                         range.GrainsArray[i, j] = new Grain()
                         {
                             Color = color,
-                            Id = ChooseGrainId(grainIds, color)
+                            Id = ChooseGrainId(grainIds, color),
                         };
                     }
                 }

@@ -49,6 +49,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -75,28 +95,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Alghorithms\CelularAutomata.cs" />
-    <Compile Include="Alghorithms\MonteCarlo.cs" />
+    <Compile Include="Helpers\RandomCoordinates.cs" />
+    <Compile Include="Main_Methods\CellularAutomata.cs" />
+    <Compile Include="Main_Methods\MonteCarlo.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helpers\Converters.cs" />
-    <Compile Include="Helpers\InitInclusions.cs" />
-    <Compile Include="Helpers\InitStructure.cs" />
+    <Compile Include="Alghorithms\InitInclusions.cs" />
+    <Compile Include="Alghorithms\InitStructures.cs" />
+    <Compile Include="Alghorithms\InitBoundaries.cs" />
     <Compile Include="Models\Boundaries.cs" />
     <Compile Include="Models\Grain.cs" />
     <Compile Include="Models\Inclusions.cs" />
-    <Compile Include="Models\MainProperties.cs" />
+    <Compile Include="Helpers\MainProperties.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\NeighbourhoodType.cs" />
+    <Compile Include="Helpers\NeighbourhoodType.cs" />
+    <Compile Include="Alghorithms\InitNucleons.cs" />
+    <Compile Include="Models\Nucleons.cs" />
     <Compile Include="Models\Range.cs" />
-    <Compile Include="Models\SpecialId.cs" />
+    <Compile Include="Helpers\SpecialId.cs" />
+    <Compile Include="Alghorithms\InitSubstructures.cs" />
     <Compile Include="Models\Substructures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

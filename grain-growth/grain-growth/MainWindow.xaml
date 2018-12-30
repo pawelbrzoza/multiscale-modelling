@@ -5,27 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="grain_growth.MainWindow"
         mc:Ignorable="d"
-        Title="Multiscale Modelling - Grain Growth" Height="774.2" Width="1178.4" Background="#FF373737" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow">
+        Title="Multiscale Modelling - Grain Growth" Height="813.4" Width="1179.2" Background="#FF373737" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow">
 
     <Window.ContextMenu>
         <ContextMenu/>
     </Window.ContextMenu>
-    <Grid>
+    <Grid Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="211*"/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="375*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Play" HorizontalAlignment="Center" Margin="136.4,605,472,0" VerticalAlignment="Top" Width="142" Height="56" FontSize="24" Click="Play_Button_Click" Grid.Column="2"/>
-        <TextBox x:Name="NumOfGrainsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="225.4,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="3" Grid.Column="2"/>
-        <Label Content="Number of grain:" HorizontalAlignment="Left" Margin="19.4,117,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="40" Width="189">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <Image x:Name="Image" MouseLeftButtonDown="Image_Click" HorizontalAlignment="Left" Height="302" Margin="43.4,194,0,0" Width="302" Grid.Column="2" VerticalAlignment="Top" Cursor="Pen"/>
-        <DockPanel HorizontalAlignment="Left" Height="26" LastChildFill="False" VerticalAlignment="Top" Width="794" Grid.ColumnSpan="3">
-            <Menu DockPanel.Dock="Top" Margin="0,0,-380.4,0">
+
+        <DockPanel HorizontalAlignment="Left" Height="30" LastChildFill="False" VerticalAlignment="Top" Width="Auto" Grid.ColumnSpan="3">
+            <Menu DockPanel.Dock="Top" Margin="0,0,-380,0" Width="1174">
                 <MenuItem Header="File">
                     <MenuItem Header="Microstructures">
                         <MenuItem Header="Import">
@@ -40,127 +33,114 @@
                     <MenuItem Header="Exit" Click="Exit_Click"/>
                 </MenuItem>
             </Menu>
-            <StackPanel></StackPanel>
         </DockPanel>
-        <Label Content="Inclusions:" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="118">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <CheckBox x:Name="InclusionsCheckBox" Content="&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,220,0,0" Height="24" Width="30" FontSize="20"/>
-        <Label Content="Type of growth:" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="174">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <StackPanel HorizontalAlignment="Left" Height="60" Margin="262,89,0,0" VerticalAlignment="Top" Width="174" Grid.ColumnSpan="3">
-            <RadioButton x:Name="NeumannRadioButton" Margin="2,2,2.4,2" IsChecked="False" Content="Von Neumann" Foreground="White" />
-            <RadioButton x:Name="MooreRadioButton" Margin="2,2,2.2,2" IsChecked="False" Content="Moore" Foreground="White"/>
-            <RadioButton x:Name="ExtendedMooreRadioButton" Margin="2,2,2.2,2" IsChecked="true" Content="Moore 2" Foreground="White"/>
+
+        <Label Content="TYPE OF METHOD:" HorizontalAlignment="Left" Margin="5.4,24,0,0" VerticalAlignment="Top" FontSize="26" Foreground="White" FontWeight="Bold" Height="45" Width="241" Grid.Column="2"/>
+        <StackPanel HorizontalAlignment="Left" Height="49" Margin="267.4,29,0,0" VerticalAlignment="Top" Width="139" Grid.Column="2">
+            <RadioButton x:Name="CellularAutomataRadioButton" Margin="2,2,-1.8,2" IsChecked="true" Foreground="White" Content="Cellular Autamata" FontSize="14"/>
+            <RadioButton x:Name="MonteCarloRadioButton" Margin="2" IsChecked="false" Foreground="White" Content="Monte Carlo" FontSize="14"/>
         </StackPanel>
-        <Label Content="Probability [%]:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="171">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <TextBox x:Name="GrowthProbabilityTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="263,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="50"/>
-        <Label Content="number of inclusions:" HorizontalAlignment="Left" Margin="39,293,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="192">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <TextBox x:Name="NumOfInclusionsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="20"
-                 IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}"/>
-        <Label Content="size of inclusions:" HorizontalAlignment="Left" Margin="39,347,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="157">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <TextBox x:Name="SizeOfInclusionsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="264,347,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="5"
-            IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}"/>
-        <Label Content="type of inclusions:" HorizontalAlignment="Left" Margin="39,244,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="163">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <StackPanel HorizontalAlignment="Left" Height="35" Margin="264,249,0,0" VerticalAlignment="Top" Width="120">
-            <RadioButton x:Name="SquareRadioButton" Margin="2" IsChecked="true" Foreground="White"
-                                              IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Square</RadioButton>
-            <RadioButton x:Name="CircularRadioButton" Margin="2" IsChecked="false" Foreground="White"
-                                              IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}">Circular</RadioButton>
-        </StackPanel>
-        <Label Content="time of creation:" HorizontalAlignment="Left" Margin="39,386,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="33" Width="150">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <StackPanel HorizontalAlignment="Left" Height="111" Margin="264,386,0,0" VerticalAlignment="Top" Width="149">
-            <RadioButton x:Name="BeginInclusionRadioButton" Margin="2" IsChecked="true" Click="BeginInclusionRadioButton_Click" Foreground="White"
-                                          IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Beginning of simulation&#xD;&#xA;(random)"/>
-            <RadioButton x:Name="AfterInclusionRadioButton" Margin="2" IsChecked="false" Click="AfterInclusionRadioButton_Click" Foreground="White"
-                                         IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="After simulation &#xD;&#xA;(on grain boundaries)"/>
-            <Button x:Name="AddInclusionsButton" Click="AddInclusionsButton_Click" Width="120" Height="20"
-                                    IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Add inclusions" Margin="14,0,14.8,0"/>
-        </StackPanel>
-        <Label Content="Substructures:" HorizontalAlignment="Left" Margin="10,486,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="158">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <StackPanel HorizontalAlignment="Left" Height="35" Margin="264,531,0,0" VerticalAlignment="Top" Width="120">
+        <TextBox x:Name="NumOfGrainsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="258.4,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="30" Grid.Column="2"/>
+        <Label Content="Number of grain:" HorizontalAlignment="Left" Margin="20.4,81,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="40" Width="189"/>
+        <Image x:Name="Image" MouseLeftButtonDown="Image_Click" HorizontalAlignment="Left" Height="302" Margin="43.4,144,0,0" Width="302" Grid.Column="2" VerticalAlignment="Top" Cursor="Pen"/>
+        <Label Content="number of selecting grains:" HorizontalAlignment="Left" Margin="78.4,446,0,0" VerticalAlignment="Top" FontSize="14" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="34" Width="242"/>
+        <Label x:Name="numberOfSelectingGrains" Content="0" HorizontalAlignment="Left" Margin="300.4,446,0,0" VerticalAlignment="Top" FontSize="14" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="29" Width="40"/>
+        <Button Click="Clear_Selected_Grains_Click" Content="Clear selected grains" HorizontalAlignment="Left" Margin="130.4,480,0,0" VerticalAlignment="Top" Width="148" RenderTransformOrigin="-0.531,0.771" Grid.Column="2" Height="23"/>
+        <Label Content="Substructures:" HorizontalAlignment="Left" Margin="20.4,508,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="158" Grid.Column="2"/>
+        <StackPanel HorizontalAlignment="Left" Height="35" Margin="259.4,553,0,0" VerticalAlignment="Top" Width="120" Grid.Column="2">
             <RadioButton x:Name="SubstrRadioButton1" Margin="2" IsChecked="true" Foreground="White"
                 IsEnabled="{Binding IsChecked, ElementName=SubstructuresCheckBox}" Content="Substructure"/>
             <RadioButton x:Name="DualPhaseRadioButton1" Margin="2" IsChecked="false" Foreground="White"
                 IsEnabled="{Binding IsChecked, ElementName=SubstructuresCheckBox}" Content="Dual phase" Height="20"/>
         </StackPanel>
-        <Label Content="type of substructure:" HorizontalAlignment="Left" Margin="39,526,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="186">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <CheckBox IsEnabled="False" x:Name="SubstructuresCheckBox" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,502,0,0" Height="24" Width="30" FontSize="20" />
-        <Label Content="Boundaries:" HorizontalAlignment="Left" Margin="10,584,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="133">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <CheckBox IsEnabled="False" x:Name="BoundariesCheckBox" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,600,0,0" Height="24" Width="30" FontSize="20"/>
-        <Label Content="type of selecting:" HorizontalAlignment="Left" Margin="39,624,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="155">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <StackPanel HorizontalAlignment="Left" Height="35" Margin="264,629,0,0" VerticalAlignment="Top" Width="120">
+        <Label Content="type of substructure:" HorizontalAlignment="Left" Margin="43.4,543,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="186" Grid.Column="2"/>
+        <CheckBox IsEnabled="False" x:Name="SubstructuresCheckBox" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="259.4,519,0,0" Height="24" Width="30" FontSize="20" Grid.Column="2" />
+        <Label Content="Boundaries:" HorizontalAlignment="Left" Margin="20.4,589,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="133" Grid.Column="2"/>
+        <CheckBox IsEnabled="False" x:Name="BoundariesCheckBox" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="259.4,605,0,0" Height="24" Width="30" FontSize="20" Grid.Column="2"/>
+        <Label Content="type of selecting:" HorizontalAlignment="Left" Margin="43.4,619,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="155" Grid.Column="2"/>
+        <StackPanel HorizontalAlignment="Left" Height="35" Margin="259.4,629,0,0" VerticalAlignment="Top" Width="120" Grid.Column="2">
             <RadioButton x:Name="BoundariesRadioButtonAll" Margin="2" IsChecked="true" Foreground="White"
                 IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Content="All"/>
             <RadioButton x:Name="BoundariesRadioButtonSelect" Margin="2" IsChecked="false" Foreground="White"
                 IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Content="Selected" Height="20"/>
         </StackPanel>
-        <Button Click="Generate_Boundaries_Click" Content="Generate boundaries" HorizontalAlignment="Left" Margin="51,686,0,0" 
-                VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Height="20"/>
-        <Button Click="Clear_Content_Click" Content="Clear space" HorizontalAlignment="Left" Margin="208,686,0,0"
-                VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Height="20"/>
-        <Label Content="number of selecting grains:" HorizontalAlignment="Left" Margin="43.4,501,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="34" Width="242"/>
-        <Label x:Name="numberOfSelectingGrains" Content="0" HorizontalAlignment="Left" Margin="289.4,501,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="34" Width="20"/>
-        <Button Click="Clear_Selected_Grains_Click" Content="Clear selected grains" HorizontalAlignment="Left" Margin="129.4,546,0,0" VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" Grid.Column="2" Height="18"/>
-        <Rectangle x:Name="RectangleCanvas" Grid.Column="2" Fill="White" HorizontalAlignment="Left" Height="302" Margin="43.4,194,0,0" VerticalAlignment="Top" Width="302"/>
-        <Label Content="Type of method:" HorizontalAlignment="Left" Margin="19.4,31,0,0" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="Bold" Height="40" Width="215" Grid.Column="2">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <StackPanel HorizontalAlignment="Left" Height="49" Margin="225.4,31,0,0" VerticalAlignment="Top" Width="133" Grid.Column="2">
-            <RadioButton x:Name="CellularAutomataRadioButton" Margin="2" IsChecked="false" Foreground="White" Content="Cellular Autamata" FontSize="14"/>
-            <RadioButton x:Name="MonteCarloRadioButton" Margin="2" IsChecked="true" Foreground="White" Content="Monte Carlo" FontSize="14"/>
-        </StackPanel>
-        <Label Content="MCS:" HorizontalAlignment="Left" Margin="395.4,87,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="41" Width="63">
-            <Label.Background>
-                <ImageBrush/>
-            </Label.Background>
-        </Label>
-        <TextBox x:Name="MCSTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="586.4,93,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="20" Grid.Column="2"/>
-        <Button x:Name="MC_Button" Content="Count" Grid.Column="2" HorizontalAlignment="Left" Margin="611.4,134,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Height="19"/>
+        <Button Click="Generate_Boundaries_Click" Content="Generate boundaries" HorizontalAlignment="Left" Margin="43.4,674,0,0" 
+                VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Height="20" Grid.Column="2"/>
+        <Button Click="Clear_Content_Click" Content="Clear space" HorizontalAlignment="Left" Margin="207.4,674,0,0"
+                VerticalAlignment="Top" Width="138" RenderTransformOrigin="-0.531,0.771" IsEnabled="{Binding IsChecked, ElementName=BoundariesCheckBox}" Height="20" Grid.Column="2"/>
+        <Button Content="Play" HorizontalAlignment="Center" Margin="130.4,715,484.8,0" VerticalAlignment="Top" Width="148" Height="40" FontSize="24" Click="Play_Button_Click" Grid.Column="2"
+                IsEnabled="{Binding Is, ElementName=SRXCheckBox}"/>
 
+        <Canvas Margin="0,50,0,0" IsEnabled="{Binding IsChecked, ElementName=CellularAutomataRadioButton}">
+            <Label Content="CELLULAR AUTOMATA" HorizontalAlignment="Left" Margin="100,33,0,0" VerticalAlignment="Top" FontSize="20" Foreground="White" FontWeight="Bold" Height="40" Width="246"/>
+            <Label Content="Type of growth:" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="174"/>
+            <StackPanel HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="174" Grid.ColumnSpan="3" Canvas.Left="250" Canvas.Top="88">
+                <RadioButton x:Name="NeumannRadioButton" Margin="2,2,2.4,2" IsChecked="False" Content="Von Neumann" Foreground="White" />
+                <RadioButton x:Name="MooreRadioButton" Margin="2,2,2.2,2" IsChecked="True" Content="Moore" Foreground="White"/>
+                <RadioButton x:Name="ExtendedMooreRadioButton" Margin="2,2,2.2,2" IsChecked="False" Content="Moore 2" Foreground="White"/>
+            </StackPanel>
+            <Label Content="Probability [%]:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="171" Canvas.Left="10" Canvas.Top="151"/>
+            <TextBox x:Name="GrowthProbabilityTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="50"
+                  IsEnabled="{Binding IsChecked, ElementName=ExtendedMooreRadioButton}" Canvas.Left="250" Canvas.Top="157"/>
+            <Label Content="Inclusions:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Height="40" Width="118" Canvas.Left="10" Canvas.Top="204"/>
+            <CheckBox x:Name="InclusionsCheckBox" Content="&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="30" FontSize="20" Canvas.Left="250" Canvas.Top="220"/>
+            <Label Content="number of inclusions:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="192" Canvas.Left="39" Canvas.Top="303"/>
+            <TextBox x:Name="NumOfInclusionsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="20"
+                 IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Canvas.Left="250" Canvas.Top="305"/>
+            <Label Content="size of inclusions:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="157" Canvas.Left="39" Canvas.Top="357"/>
+            <TextBox x:Name="SizeOfInclusionsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="5"
+            IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Canvas.Left="250" Canvas.Top="359"/>
+            <Label Content="type of inclusions:" HorizontalAlignment="Left" Margin="39,244,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="163"/>
+            <StackPanel HorizontalAlignment="Left" Height="35" VerticalAlignment="Top" Width="120" Canvas.Left="250" Canvas.Top="249">
+                <RadioButton x:Name="SquareRadioButton" Margin="2" IsChecked="true" Foreground="White"
+                                              IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Square"/>
+                <RadioButton x:Name="CircularRadioButton" Margin="2" IsChecked="false" Foreground="White"
+                                              IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Circular"/>
+            </StackPanel>
+            <Label Content="time of creation:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="33" Width="150" Canvas.Left="39" Canvas.Top="405"/>
+            <StackPanel HorizontalAlignment="Left" Height="111" VerticalAlignment="Top" Width="149" Canvas.Left="250" Canvas.Top="415">
+                <RadioButton x:Name="BeginInclusionRadioButton" Margin="2" IsChecked="true" Foreground="White"
+                                          IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Beginning of simulation&#xD;&#xA;(random)"/>
+                <RadioButton x:Name="AfterInclusionRadioButton" Margin="2,2,1.8,2" IsChecked="false" Foreground="White"
+                                         IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="After simulation &#xD;&#xA;(on grain boundaries)" Height="36"/>
+                <Button x:Name="AddInclusionsButton" Click="AddInclusionsButton_Click" Height="20"
+                                    IsEnabled="{Binding IsChecked, ElementName=InclusionsCheckBox}" Content="Add inclusions" Margin="14,0,9.8,0"/>
+            </StackPanel>
+        </Canvas>
+
+        <Canvas HorizontalAlignment="Left" Margin="400,50,0,0" VerticalAlignment="Top" IsEnabled="{Binding IsChecked, ElementName=MonteCarloRadioButton}">
+            <Label Content="MONTE CARLO" HorizontalAlignment="Left" Margin="493.4,31,0,0"  VerticalAlignment="Top" FontSize="20" Foreground="White" FontWeight="Bold" Height="40" Width="175" Grid.Column="2"/>
+            <Label Content="MCS:" HorizontalAlignment="Left" Margin="400.4,85,0,0" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="41" Width="63"/>
+            <TextBox x:Name="MCSTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="515.4,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="10" Grid.Column="2"/>
+            <Button x:Name="MC_Button" Content="Add" Grid.Column="2" HorizontalAlignment="Left" Margin="661.4,89,0,0" VerticalAlignment="Top" Width="70" Click="Add_MCS_Button_Click" Height="31"/>
+            <Label Content="Static recrystalization:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Foreground="White" FontWeight="Bold" Grid.Column="2" Height="41" Width="240" Canvas.Left="400" Canvas.Top="158"/>
+            <CheckBox x:Name="SRXCheckBox" IsChecked="true" Content="&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="670.4,175,0,0" Height="24" Width="30" FontSize="20" Grid.Column="2"/>
+            <Label Content="number of nucleons:" HorizontalAlignment="Left" Margin="424.6,212,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2"/>
+            <TextBox x:Name="NumOfNucleonsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="619.6,220,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="100" Grid.Column="2"
+                 IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}"/>
+            <Label Content="type of creation:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="279"/>
+            <StackPanel HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="120" Grid.Column="2"
+                    IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="290">
+                <RadioButton x:Name="ConstantRadioButton_SRX" Margin="2,2,2.4,2" IsChecked="False" Content="Constant" Foreground="White"/>
+                <RadioButton x:Name="IncreasingRadioButton_SRX" Margin="2,2,2.2,2" IsChecked="False" Content="Incerasing" Foreground="White"/>
+                <RadioButton x:Name="AtTheBegRadioButton_SRX" Margin="2,2,2.2,2" IsChecked="true" Content="At the beggining" Foreground="White"/>
+            </StackPanel>
+            <Label Content="energy distribution:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="357"/>
+            <StackPanel HorizontalAlignment="Left" Height="35" VerticalAlignment="Top" Width="120" Grid.Column="2"
+                    IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="367">
+                <RadioButton x:Name="HomogenousRadioButton_SRX" Margin="2" IsChecked="false" Foreground="White" Content="Homogenous"/>
+                <RadioButton x:Name="HeterogenousRadioButton_SRX" Margin="2" IsChecked="true" Foreground="White" Content="Heterogrnous&#xA;"/>
+            </StackPanel>
+            <Rectangle x:Name="RectangleCanvas" Grid.Column="2" Fill="White" HorizontalAlignment="Left" Height="302" VerticalAlignment="Top" Width="302" Canvas.Left="49" Canvas.Top="89"/>
+            <Button x:Name="SRXButton" Content="SRX" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="144" Click="SRX_Button_Click" Height="40" Canvas.Left="540" Canvas.Top="552" FontSize="24"
+                    IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}"/>
+            <Label Content="energy inside:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="427"/>
+            <Label Content="energy on edges:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="480"/>
+            <TextBox x:Name="EnergyInside" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="4" Grid.Column="2"
+            IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="429"/>
+            <TextBox x:Name="EnergyOnEdges" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="6" Grid.Column="2"
+            IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="482"/>
+        </Canvas>
 
     </Grid>
 </Window>

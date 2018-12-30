@@ -4,16 +4,6 @@ namespace grain_growth.Models
 {
     public class Range
     {
-        public int Width { get; set; }
-
-        public int Height { get; set; }
-
-        public bool IsFull { get; set; }
-
-        public Bitmap StructureBitmap { get; set; }
-
-        public Grain[,] GrainsArray { get; set; }
-
         public Range()
         {
             IsFull = false;
@@ -35,5 +25,15 @@ namespace grain_growth.Models
             GrainsArray = new Grain[width, height];
             StructureBitmap = new Bitmap(width, height);
         }
+
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        public bool IsFull { get; set; }
+
+        public Bitmap StructureBitmap { get; set; }
+
+        public Grain[,] GrainsArray { get; set; }
     }
 }
