@@ -118,28 +118,33 @@
             <Label Content="number of nucleons:" HorizontalAlignment="Left" Margin="424.6,212,0,0" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2"/>
             <TextBox x:Name="NumOfNucleonsTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" Margin="619.6,220,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="100" Grid.Column="2"
                  IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}"/>
-            <Label Content="type of creation:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="279"/>
+            <Label Content="type of creation:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="265"/>
             <StackPanel HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="120" Grid.Column="2"
-                    IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="290">
+                    IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="275">
                 <RadioButton x:Name="ConstantRadioButton_SRX" Margin="2,2,2.4,2" IsChecked="False" Content="Constant" Foreground="White"/>
                 <RadioButton x:Name="IncreasingRadioButton_SRX" Margin="2,2,2.2,2" IsChecked="False" Content="Incerasing" Foreground="White"/>
                 <RadioButton x:Name="AtTheBegRadioButton_SRX" Margin="2,2,2.2,2" IsChecked="true" Content="At the beggining" Foreground="White"/>
             </StackPanel>
-            <Label Content="energy distribution:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="357"/>
+            <Label Content="energy distribution:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="343"/>
             <StackPanel HorizontalAlignment="Left" Height="35" VerticalAlignment="Top" Width="120" Grid.Column="2"
-                    IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="367">
+                    IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="354">
                 <RadioButton x:Name="HomogenousRadioButton_SRX" Margin="2" IsChecked="false" Foreground="White" Content="Homogenous"/>
                 <RadioButton x:Name="HeterogenousRadioButton_SRX" Margin="2" IsChecked="true" Foreground="White" Content="Heterogrnous&#xA;"/>
             </StackPanel>
             <Rectangle x:Name="RectangleCanvas" Grid.Column="2" Fill="White" HorizontalAlignment="Left" Height="302" VerticalAlignment="Top" Width="302" Canvas.Left="49" Canvas.Top="89"/>
-            <Button x:Name="SRXButton" Content="SRX" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="144" Click="SRX_Button_Click" Height="40" Canvas.Left="540" Canvas.Top="552" FontSize="24"
+            <Button x:Name="SRXButton" Content="SRX" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="144" Click="SRX_Button_Click" Height="40" Canvas.Left="515" Canvas.Top="595" FontSize="24"
                     IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}"/>
-            <Label Content="energy inside:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="427"/>
-            <Label Content="energy on edges:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="480"/>
-            <TextBox x:Name="EnergyInside" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="4" Grid.Column="2"
-            IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="429"/>
-            <TextBox x:Name="EnergyOnEdges" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="6" Grid.Column="2"
-            IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="482"/>
+            <Label Content="energy inside:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="441"/>
+            <Label Content="energy on edges:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Grid.Column="2" Canvas.Left="425" Canvas.Top="485"/>
+            <TextBox x:Name="EnergyInsideTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="5" Grid.Column="2"
+            IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="443"/>
+            <TextBox x:Name="EnergyOnEdgesTextBox" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="6" Grid.Column="2"
+            IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="487"/>
+            <Label Content="number of states:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White" FontWeight="Bold" Height="34" Width="190" Canvas.Left="425" Canvas.Top="533"/>
+            <TextBox x:Name="NumOfStatesTextBox_SRX" TextAlignment="Center" HorizontalAlignment="Left" Height="32" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.188,0.628" FontSize="20" FontWeight="Bold" Text="4"
+                IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}" Canvas.Left="620" Canvas.Top="533"/>
+            <Button x:Name="VizualizationButton" Content="Visualization" HorizontalAlignment="Left" VerticalAlignment="Top" Width="144" Click="Vizualization_Button_Click" Height="22" Canvas.Left="515" Canvas.Top="404" FontSize="14"
+                IsEnabled="{Binding IsChecked, ElementName=SRXCheckBox}"/>
         </Canvas>
 
     </Grid>

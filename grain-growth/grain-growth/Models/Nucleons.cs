@@ -1,4 +1,6 @@
 ﻿
+using System.Drawing;
+
 namespace grain_growth.Models
 {
     public class Nucleons
@@ -6,6 +8,8 @@ namespace grain_growth.Models
         public bool IsEnable { get; set; }
 
         public int AmountOfNucleons { get; set; }
+
+        public Color[] NucleonsStates { get; set; }
 
         public int EnergyInside { get; set; }
 

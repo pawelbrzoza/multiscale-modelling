@@ -76,12 +76,14 @@ namespace grain_growth
             {
                 IsEnable = (bool)SRXCheckBox.IsChecked,
                 AmountOfNucleons = Converters.StringToInt(NumOfNucleonsTextBox.Text),
+                NucleonsStates = new Color[Converters.StringToInt(NumOfStatesTextBox_SRX.Text)],
                 TypeOfcreation = ChooseTypeOfNucleonsCreation(),
                 EnergyDistribution = ChooseEnegryDistribution(),
-                EnergyInside = Converters.StringToInt(EnergyInside.Text),
-                EnergyOnEdges = Converters.StringToInt(EnergyOnEdges.Text)
+                EnergyInside = Converters.StringToInt(EnergyInsideTextBox.Text),
+                EnergyOnEdges = Converters.StringToInt(EnergyOnEdgesTextBox.Text)
             };
             tempIteration = Converters.StringToInt(MCSTextBox.Text);
+            
         }
 
         private void Dispatcher_Tick(object sender, EventArgs e)
@@ -159,6 +161,13 @@ namespace grain_growth
                     Mouse.OverrideCursor = null;
                 });
             }
+        }
+
+        private void Vizualization_Button_Click(object sender, RoutedEventArgs e)
+        {
+            prevRange = nucleons.EnergyVisualization(currRange, nucleons);
+            CellularAutomata.UpdateBitmap(prevRange);
+            Image.Source = Converters.BitmapToImageSource(prevRange.StructureBitmap);
         }
 
         private void Play_Button_Click(object sender, RoutedEventArgs e)
