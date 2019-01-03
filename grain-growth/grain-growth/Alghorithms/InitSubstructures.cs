@@ -22,7 +22,7 @@ namespace grain_growth.Models
                             {
                                 tempRange.GrainsArray[i, j] = new Grain
                                 {
-                                    Id = -3,
+                                    Id = (int)SpecialId.Id.Substructure,
                                     Color = tempRange.GrainsArray[i, j].Color
                                 };
                             }
@@ -30,7 +30,7 @@ namespace grain_growth.Models
                             {
                                 tempRange.GrainsArray[i, j] = new Grain
                                 {
-                                    Id = -4,
+                                    Id = (int)SpecialId.Id.DualPhase,
                                     Color = Color.Pink
                                 };
                             }
@@ -41,7 +41,7 @@ namespace grain_growth.Models
                     if(tempRange.GrainsArray[i, j].Id == -2){
                         tempRange.GrainsArray[i, j] = new Grain
                         {
-                            Id = -2,
+                            Id = (int)SpecialId.Id.Inclusion,
                             Color = Color.Black
                         };
                         change = true;
@@ -50,7 +50,7 @@ namespace grain_growth.Models
                     {
                         tempRange.GrainsArray[i, j] = new Grain
                         {
-                            Id = 0,
+                            Id = (int)SpecialId.Id.Empty,
                             Color = Color.White
                         };
                     }
@@ -93,7 +93,7 @@ namespace grain_growth.Models
                             {
                                 tempRange.GrainsArray[i, j] = new Grain
                                 {
-                                    Id = -3,
+                                    Id = (int)SpecialId.Id.Substructure,
                                     Color = tempRange.GrainsArray[i, j].Color
                                 };
                             }
@@ -101,7 +101,7 @@ namespace grain_growth.Models
                             {
                                 tempRange.GrainsArray[i, j] = new Grain
                                 {
-                                    Id = -4,
+                                    Id = (int)SpecialId.Id.DualPhase,
                                     Color = Color.Pink
                                 };
                             }
@@ -113,7 +113,7 @@ namespace grain_growth.Models
                     {
                         tempRange.GrainsArray[i, j] = new Grain
                         {
-                            Id = -2,
+                            Id = (int)SpecialId.Id.Inclusion,
                             Color = Color.Black
                         };
                         change = true;
@@ -122,7 +122,7 @@ namespace grain_growth.Models
                     {
                         tempRange.GrainsArray[i, j] = new Grain
                         {
-                            Id = 0,
+                            Id = (int)SpecialId.Id.Empty,
                             Color = Color.White
                         };
                     }
@@ -136,7 +136,7 @@ namespace grain_growth.Models
             {
                 InitStructures.AllGrainsTypes[grainNumber - 1] = new Grain()
                 {
-                    Color = Color.FromArgb(Random.Next(10, 240), Random.Next(10, 240), Random.Next(2, 240)),
+                    Color = Color.FromArgb(Random.Next(10, 240), Random.Next(10, 240), Random.Next(10, 240)),
                     Id = grainNumber
                 };
             }
@@ -145,8 +145,7 @@ namespace grain_growth.Models
             {
                 for (int j = 1; j < tempRange.Height - 1; j++)
                 {
-                    if(tempRange.GrainsArray[i,j].Id != -1 && tempRange.GrainsArray[i, j].Id != -2 && tempRange.GrainsArray[i, j].Id != -3
-                        && tempRange.GrainsArray[i, j].Id != -4 && tempRange.GrainsArray[i, j].Id != -5)
+                    if(tempRange.GrainsArray[i,j].Id >= 0)
                     {
                         int r = Random.Next(InitStructures.AllGrainsTypes.Length);
                         tempRange.GrainsArray[i, j] = new Grain()

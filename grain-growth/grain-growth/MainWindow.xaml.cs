@@ -1,4 +1,4 @@
-﻿using grain_growth.Alghorithms;
+﻿using grain_growth.MainMethods;
 using grain_growth.Models;
 using grain_growth.Helpers;
 
@@ -11,6 +11,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Input;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace grain_growth
 {
@@ -47,7 +48,6 @@ namespace grain_growth
             currRange = new Range();
 
             Substructures.SubStrucrtuePointsList = new List<System.Drawing.Point>();
-
             SetProperties();
         }
     
@@ -117,7 +117,8 @@ namespace grain_growth
             }
             else
             {
-                currRange = ca.Grow(properties.NeighbourhoodType, prevRange, properties.GrowthProbability);
+                currRange = ca.Grow(prevRange, properties);
+
                 if (currRange.IsFull)
                 {
                     if (AfterInclusionRadioButton.IsChecked == true && InclusionsCheckBox.IsChecked == true)
@@ -163,11 +164,12 @@ namespace grain_growth
             }
         }
 
-        private void Vizualization_Button_Click(object sender, RoutedEventArgs e)
+        private void Energy_Vizualization_Button_Click(object sender, RoutedEventArgs e)
         {
-            prevRange = nucleons.EnergyVisualization(currRange, nucleons);
-            CellularAutomata.UpdateBitmap(prevRange);
-            Image.Source = Converters.BitmapToImageSource(prevRange.StructureBitmap);
+            prevRange = currRange;
+            nucleons.EnergyVisualization(currRange, nucleons);
+            CellularAutomata.UpdateBitmap(currRange);
+            Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
         }
 
         private void Play_Button_Click(object sender, RoutedEventArgs e)

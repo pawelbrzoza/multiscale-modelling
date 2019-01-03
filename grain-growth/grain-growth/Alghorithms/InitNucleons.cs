@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using grain_growth.Helpers;
 
@@ -11,11 +10,11 @@ namespace grain_growth.Models
 
         public Range InitializeNucleons(Range tempRange, InitNucleons nucleons)
         {
-            //randomize nucleon states
+            // randomize nucleon states
             for (int i = 0; i < nucleons.NucleonsStates.Length; i++)
                 NucleonsStates[i] = Color.FromArgb(Random.Next(50, 200), 0, 0);
 
-            //homo
+            // homo
             if (EnergyDistribution == EnergyDistribution.Homogenous)
             {
                 Point coordinates;
@@ -27,15 +26,15 @@ namespace grain_growth.Models
                     }
                     while (tempRange.GrainsArray[coordinates.X, coordinates.Y].Id <= 0);
 
-                    tempRange.GrainsArray[coordinates.X, coordinates.Y].Id = -5;
+                    tempRange.GrainsArray[coordinates.X, coordinates.Y].Id = (int)SpecialId.Id.Nucleon;
                     tempRange.GrainsArray[coordinates.X, coordinates.Y].Color = NucleonsStates[Random.Next(nucleons.NucleonsStates.Length)];
                 }
             }
-            //hetero
+            // hetero
             else
             {
                 Point coordinates;
-                for (int i = 0; i < AmountOfNucleons; i++)
+                for (int i = 0; i < nucleons.AmountOfNucleons; i++)
                 {
                     do
                     {
@@ -43,7 +42,7 @@ namespace grain_growth.Models
                     }
                     while (!InitBoundaries.IsOnGrainBoundaries(tempRange, coordinates) && !SpecialId.IsIdSpecial(tempRange.GrainsArray[coordinates.X, coordinates.Y].Id));
 
-                    tempRange.GrainsArray[coordinates.X, coordinates.Y].Id = -5;
+                    tempRange.GrainsArray[coordinates.X, coordinates.Y].Id = (int)SpecialId.Id.Nucleon;
                     tempRange.GrainsArray[coordinates.X, coordinates.Y].Color = NucleonsStates[Random.Next(nucleons.NucleonsStates.Length)];
                 }
             }
@@ -87,9 +86,9 @@ namespace grain_growth.Models
         public Range EnergyVisualization(Range tempRange, InitNucleons nucleons)
         {
 
-            for (int i = 1; i < tempRange.Width; i++)
+            for (int i = 1; i < tempRange.Width - 1; i++)
             {
-                for (int j = 0; j < tempRange.Height; j++)
+                for (int j = 1; j < tempRange.Height - 1; j++)
                 {
                     if(tempRange.GrainsArray[i,j].Energy_H == nucleons.EnergyInside)
                     {
@@ -100,7 +99,7 @@ namespace grain_growth.Models
                         tempRange.GrainsArray[i, j].Color = Color.Green;
                     }
 
-                    if(tempRange.GrainsArray[i,j].Id == -5)
+                    if(tempRange.GrainsArray[i,j].Id == (int)SpecialId.Id.Nucleon)
                     {
                         tempRange.GrainsArray[i, j].Color = Color.Red;
                     }

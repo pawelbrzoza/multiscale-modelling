@@ -16,7 +16,7 @@ namespace grain_growth.Models
             Inclusion = -2,
             Substructure = -3,
             DualPhase = -4,
-            //Nucleon = -5
+            Nucleon = -5
         }
     }
 }

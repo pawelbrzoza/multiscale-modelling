@@ -1,4 +1,4 @@
-﻿using grain_growth.Alghorithms;
+﻿using grain_growth.MainMethods;
 using grain_growth.Helpers;
 using System.Collections.Generic;
 using System.Drawing;

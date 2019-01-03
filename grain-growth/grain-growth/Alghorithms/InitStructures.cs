@@ -26,7 +26,7 @@ namespace grain_growth.Helpers
                     if (tempRange.GrainsArray[i, j] == null)
                         tempRange.GrainsArray[i, j] = new Grain()
                         {
-                            Id = 0,
+                            Id = (int)SpecialId.Id.Empty,
                             Color = Color.White,
                         };
 
@@ -58,7 +58,6 @@ namespace grain_growth.Helpers
         {
             AllGrainsTypes = new Grain[properties.AmountOfGrains];
             Range tempRange = new Range(properties.RangeWidth, properties.RangeHeight);
-            tempRange.IsFull = false;
 
             // border
             AddBlackBorder(tempRange);
@@ -88,7 +87,7 @@ namespace grain_growth.Helpers
             }
 
             tempRange.StructureBitmap = new Bitmap(properties.RangeWidth, properties.RangeHeight);
-
+            tempRange.IsFull = false;
             return tempRange;
         }
 
@@ -98,13 +97,13 @@ namespace grain_growth.Helpers
             {
                 tempRange.GrainsArray[0, i] = new Grain()
                 {
-                    Id = -1,
+                    Id = (int)SpecialId.Id.Border,
                     Color = Color.Black,
                     Energy_H = 0
                 };
                 tempRange.GrainsArray[tempRange.Width - 1, i] = new Grain()
                 {
-                    Id = -1,
+                    Id = (int)SpecialId.Id.Border,
                     Color = Color.Black,
                     Energy_H = 0
                 };
@@ -114,13 +113,13 @@ namespace grain_growth.Helpers
             {
                 tempRange.GrainsArray[i, 0] = new Grain()
                 {
-                    Id = -1,
+                    Id = (int)SpecialId.Id.Border,
                     Color = Color.Black,
                     Energy_H = 0
                 };
                 tempRange.GrainsArray[i, tempRange.Height - 1] = new Grain()
                 {
-                    Id = -1,
+                    Id = (int)SpecialId.Id.Border,
                     Color = Color.Black,
                     Energy_H = 0
                 };

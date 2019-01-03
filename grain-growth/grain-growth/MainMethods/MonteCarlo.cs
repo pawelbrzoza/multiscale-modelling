@@ -5,8 +5,9 @@ using System.Linq;
 
 using grain_growth.Helpers;
 using grain_growth.Models;
+using FastBitmapLib;
 
-namespace grain_growth.Alghorithms
+namespace grain_growth.MainMethods
 {
     class MonteCarlo
     {
@@ -127,9 +128,12 @@ namespace grain_growth.Alghorithms
         public static void UpdateBitmap(Range range)
         {
             // setting bitmap colors form grains array
-            for (int i = 0; i < range.Width; i++)
-                for (int j = 0; j < range.Height; j++)
-                    range.StructureBitmap.SetPixel(i, j, range.GrainsArray[i, j].Color);
+            using (var fastBitmap = range.StructureBitmap.FastLock())
+            {
+                for (int i = 0; i < range.Width; i++)
+                    for (int j = 0; j < range.Height; j++)
+                        fastBitmap.SetPixel(i, j, range.GrainsArray[i, j].Color);
+            }
         }
 
         public static int ChooseGrainId(Dictionary<Color, int> grainIds, Color color)
