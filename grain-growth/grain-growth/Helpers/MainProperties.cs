@@ -3,6 +3,7 @@ namespace grain_growth.Models
 {
     public class MainProperties
     {
+
         public int RangeWidth { get; set; }
 
         public int RangeHeight { get; set; }
@@ -18,5 +19,12 @@ namespace grain_growth.Models
         public NeighbourhoodType NeighbourhoodType { get; set; }
 
         public SubstructuresType SubstructuresType { get; set; }
+
+        public MethodType MethodType { get; set; }
+    }
+
+    public enum MethodType {
+        CellularAutomata = 0,
+        MonteCarlo = 1
     }
 }

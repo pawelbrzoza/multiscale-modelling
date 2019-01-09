@@ -15,7 +15,11 @@ namespace grain_growth.Models
 
         public int EnergyOnEdges { get; set; }
 
+        public Range EnergyRange { get; set; }
+
         public EnergyDistribution EnergyDistribution { get; set; }
+
+        public PositionDistribiution PositionDistribiution { get; set; }
 
         public TypeOfNucleonsCreation TypeOfcreation { get; set; }
     }
@@ -25,6 +29,12 @@ namespace grain_growth.Models
         Constant = 0,
         Increasing = 1,
         AtTheBeginning = 2
+    }
+
+    public enum PositionDistribiution
+    {
+        Anywhere = 0,
+        OnGrainBoundaries = 1
     }
 
     public enum EnergyDistribution

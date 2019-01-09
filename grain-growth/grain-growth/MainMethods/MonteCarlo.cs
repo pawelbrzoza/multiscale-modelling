@@ -20,9 +20,9 @@ namespace grain_growth.MainMethods
 
         public Range Grow(Range tempRange, InitNucleons nucleons)
         {
-
             List<Grain> neighbourhood = new List<Grain>();
             List<Point> pointsCoordinates = new List<Point>();
+            List<Point> neighbourhoodPoints = new List<Point>();
             Grain centerGrain;
             int EnergyAfter, EnergyBefore, EnergyDelta, randomNumberOfList;
 
@@ -48,22 +48,22 @@ namespace grain_growth.MainMethods
                     //step 2
                     neighbourhood = TakeMooreNeighbourhood(pointsCoordinates.First().X, pointsCoordinates.First().Y, tempRange.GrainsArray);
 
-                    EnergyBefore = neighbourhood.Where(g => (!SpecialId.IsIdSpecial(g.Id) && g.Id != centerGrain.Id))
+                    EnergyBefore = neighbourhood.Where(g => g.Id != centerGrain.Id)
                                         .Select(g => g.Id).Count() + centerGrain.Energy_H;
 
                     //step 3
                     randomNumberOfList = Random.Next(InitStructures.AllGrainsTypes.Length);
                     centerGrain = InitStructures.AllGrainsTypes[randomNumberOfList];
 
-                    EnergyAfter = neighbourhood.Where(g => (!SpecialId.IsIdSpecial(g.Id) && g.Id != centerGrain.Id))
+                    EnergyAfter = neighbourhood.Where(g => g.Id != centerGrain.Id)
                                             .Select(g => g.Id).Count();
                     //step 4
                     EnergyDelta = EnergyAfter - EnergyBefore;
 
                     //step 5
-                    if (EnergyDelta <= 0 && !SpecialId.IsIdSpecial(tempRange.GrainsArray[pointsCoordinates.First().X, pointsCoordinates.First().Y].Id))
-                        tempRange.GrainsArray[pointsCoordinates.First().X, pointsCoordinates.First().Y] = neighbourhood.Where(g=>g.Id == -5).First();
-                    
+                    if (EnergyDelta <= 0)
+                        tempRange.GrainsArray[pointsCoordinates.First().X, pointsCoordinates.First().Y] = neighbourhood.Where(g => g.Id == (int)SpecialId.Id.Nucleon).First();
+
                     pointsCoordinates.RemoveAt(0);
                 }
             }
@@ -85,6 +85,8 @@ namespace grain_growth.MainMethods
                     //step 2
                     neighbourhood = TakeMooreNeighbourhood(pointsCoordinates.First().X, pointsCoordinates.First().Y, tempRange.GrainsArray);
 
+                    neighbourhoodPoints = TakeMooreNeighbourhood(pointsCoordinates.First().X, pointsCoordinates.First().Y);
+
                     EnergyBefore = neighbourhood.Where(g => (!SpecialId.IsIdSpecial(g.Id) && g.Id != centerGrain.Id))
                                             .Select(g => g.Id).Count();
 
@@ -104,7 +106,6 @@ namespace grain_growth.MainMethods
                     pointsCoordinates.RemoveAt(0);
                 }
             }
-            
             UpdateBitmap(tempRange);
             return tempRange;
         }
@@ -122,6 +123,22 @@ namespace grain_growth.MainMethods
                 structureArray[i + 1, j - 1],
                 structureArray[i + 1, j + 1]
             };
+            return neighbourhood;
+        }
+
+        private List<Point> TakeMooreNeighbourhood(int i, int j)
+        {
+            List<Point> neighbourhood = new List<Point>();
+
+            neighbourhood.Add(new Point(i - 1, j));
+            neighbourhood.Add(new Point(i + 1, j));
+            neighbourhood.Add(new Point(i, j - 1));
+            neighbourhood.Add(new Point(i, j + 1));
+            neighbourhood.Add(new Point(i - 1, j - 1));
+            neighbourhood.Add(new Point(i - 1, j + 1));
+            neighbourhood.Add(new Point(i + 1, j - 1));
+            neighbourhood.Add(new Point(i + 1, j + 1));
+            
             return neighbourhood;
         }
 

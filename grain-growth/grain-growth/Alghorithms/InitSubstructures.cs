@@ -161,5 +161,79 @@ namespace grain_growth.Models
             tempRange.IsFull = false;
             return tempRange;
         }
+
+        public Range UpdateSubstructuresSRX(Range tempRange, MainProperties properties)
+        {
+            for (int i = 1; i < tempRange.Width - 1; i++)
+            {
+                for (int j = 1; j < tempRange.Height - 1; j++)
+                {
+                    if (tempRange.GrainsArray[i, j].Id == (int)SpecialId.Id.Nucleon)
+                    {
+                        tempRange.GrainsArray[i, j] = new Grain
+                        {
+                            Id = (int)SpecialId.Id.Empty,
+                            Color = Color.White
+                        };
+                    }
+                    else if(tempRange.GrainsArray[i, j].Id > 0)
+                    {
+                        tempRange.GrainsArray[i, j] = new Grain
+                        {
+                            Id = (int)SpecialId.Id.Substructure,
+                            Color = tempRange.GrainsArray[i, j].Color
+                        };
+                    }
+                }
+            }
+
+            if(properties.MethodType == MethodType.CellularAutomata)
+            {
+                Point coordinates;
+                for (int grainNumber = 1; grainNumber <= properties.AmountOfGrains; grainNumber++)
+                {
+                    do
+                    {
+                        coordinates = RandomCoordinates.Get(tempRange.Width, tempRange.Height, Random);
+                    }
+                    while (tempRange.GrainsArray[coordinates.X, coordinates.Y].Id != 0);
+
+                    tempRange.GrainsArray[coordinates.X, coordinates.Y].Color = InitStructures.AllGrainsTypes[grainNumber - 1].Color;
+                    tempRange.GrainsArray[coordinates.X, coordinates.Y].Id = InitStructures.AllGrainsTypes[grainNumber - 1].Id;
+                }
+            }
+            else
+            {
+                InitStructures.AllGrainsTypes = new Grain[properties.AmountOfGrains];
+
+                // set random starting coordinates [x,y] and color for grains 
+                for (int grainNumber = 1; grainNumber <= properties.AmountOfGrains; grainNumber++)
+                {
+                    InitStructures.AllGrainsTypes[grainNumber - 1] = new Grain()
+                    {
+                        Color = Color.FromArgb(Random.Next(10, 240), Random.Next(10, 240), Random.Next(10, 240)),
+                        Id = grainNumber
+                    };
+                }
+                for (int i = 1; i < tempRange.Width - 1; i++)
+                {
+                    for (int j = 1; j < tempRange.Height - 1; j++)
+                    {
+                        if (tempRange.GrainsArray[i, j].Id == 0)
+                        {
+                            int r = Random.Next(InitStructures.AllGrainsTypes.Length);
+                            tempRange.GrainsArray[i, j] = new Grain()
+                            {
+                                Id = InitStructures.AllGrainsTypes[r].Id,
+                                Color = InitStructures.AllGrainsTypes[r].Color
+                            };
+                        }
+                    }
+                }
+            }
+
+
+            return tempRange;
+        }
     }
 }

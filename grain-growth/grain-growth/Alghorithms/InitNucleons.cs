@@ -14,8 +14,8 @@ namespace grain_growth.Models
             for (int i = 0; i < nucleons.NucleonsStates.Length; i++)
                 NucleonsStates[i] = Color.FromArgb(Random.Next(50, 200), 0, 0);
 
-            // homo
-            if (EnergyDistribution == EnergyDistribution.Homogenous)
+            // anywhere
+            if (PositionDistribiution == PositionDistribiution.Anywhere)
             {
                 Point coordinates;
                 for (int i = 0; i < nucleons.AmountOfNucleons; i++)
@@ -30,7 +30,7 @@ namespace grain_growth.Models
                     tempRange.GrainsArray[coordinates.X, coordinates.Y].Color = NucleonsStates[Random.Next(nucleons.NucleonsStates.Length)];
                 }
             }
-            // hetero
+            // on grain boundaries
             else
             {
                 Point coordinates;
@@ -83,9 +83,8 @@ namespace grain_growth.Models
             return tempRange;
         }
 
-        public Range EnergyVisualization(Range tempRange, InitNucleons nucleons)
+        public void EnergyVisualization(ref Range tempRange, InitNucleons nucleons)
         {
-
             for (int i = 1; i < tempRange.Width - 1; i++)
             {
                 for (int j = 1; j < tempRange.Height - 1; j++)
@@ -106,7 +105,6 @@ namespace grain_growth.Models
                 }
 
             }
-            return tempRange;
         }
     }
 }

@@ -11,7 +11,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Input;
 using System.Collections.Generic;
-using System.Threading;
+using FastBitmapLib;
 
 namespace grain_growth
 {
@@ -46,6 +46,7 @@ namespace grain_growth
             ca = new CellularAutomata();
             mc = new MonteCarlo();
             currRange = new Range();
+            prevRange = new Range();
 
             Substructures.SubStrucrtuePointsList = new List<System.Drawing.Point>();
             SetProperties();
@@ -61,7 +62,8 @@ namespace grain_growth
                 NeighbourhoodType = ChooseNeighbourhoodType(),
                 GrowthProbability = Converters.StringToInt(GrowthProbabilityTextBox.Text),
                 MCS = Converters.StringToInt(MCSTextBox.Text),
-                SubstructuresType = ChooseSubstructuresType()
+                SubstructuresType = ChooseSubstructuresType(),
+                MethodType = ChooseMethodType()
             };
             inclusions = new InitInclusions()
             {
@@ -80,7 +82,10 @@ namespace grain_growth
                 TypeOfcreation = ChooseTypeOfNucleonsCreation(),
                 EnergyDistribution = ChooseEnegryDistribution(),
                 EnergyInside = Converters.StringToInt(EnergyInsideTextBox.Text),
-                EnergyOnEdges = Converters.StringToInt(EnergyOnEdgesTextBox.Text)
+                EnergyOnEdges = Converters.StringToInt(EnergyOnEdgesTextBox.Text),
+                PositionDistribiution = ChoosePositionDistribution(),
+                EnergyRange = new Range()
+                
             };
             tempIteration = Converters.StringToInt(MCSTextBox.Text);
             
@@ -90,16 +95,8 @@ namespace grain_growth
         {
             if (MonteCarloRadioButton.IsChecked == true)
             {
-                if(nucleons.TypeOfcreation == TypeOfNucleonsCreation.Constant){
-                    prevRange = nucleons.InitializeNucleons(currRange, nucleons);
-                }
-                else if(nucleons.TypeOfcreation == TypeOfNucleonsCreation.Increasing)
-                {
-                    nucleons.AmountOfNucleons += tempIteration;
-                    prevRange = nucleons.InitializeNucleons(currRange, nucleons);
-                }
-
                 currRange = mc.Grow(prevRange, nucleons);
+                properties.MCS--;
                 if (properties.MCS <= 0)
                 {
                     if (AfterInclusionRadioButton.IsChecked == true && InclusionsCheckBox.IsChecked == true)
@@ -113,7 +110,15 @@ namespace grain_growth
                     currRange.IsFull = true;
                     dispatcher.Stop();
                 }
-                properties.MCS--;
+                if (nucleons.TypeOfcreation == TypeOfNucleonsCreation.Constant)
+                {
+                    prevRange = nucleons.InitializeNucleons(currRange, nucleons);
+                }
+                else if (nucleons.TypeOfcreation == TypeOfNucleonsCreation.Increasing)
+                {
+                    nucleons.AmountOfNucleons += tempIteration;
+                    prevRange = nucleons.InitializeNucleons(currRange, nucleons);
+                }
             }
             else
             {
@@ -137,7 +142,7 @@ namespace grain_growth
             Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
         }
 
-        private void SRX_Button_Click(object sender, RoutedEventArgs e)
+        private void SRX_Add_Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -147,12 +152,33 @@ namespace grain_growth
                 });
 
                 SetProperties();
-
                 CellularAutomata.UpdateGrainsArray(currRange);
                 prevRange = nucleons.InitializeNucleons(currRange, nucleons);
                 prevRange = nucleons.EnergyDistributor(currRange, nucleons);
-
                 Image.Source = Converters.BitmapToImageSource(prevRange.StructureBitmap);
+                dispatcher.Start();
+            }
+            catch (Exception)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Mouse.OverrideCursor = null;
+                });
+            }
+        }
+
+        private void SRX_New_Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                });
+
+                SetProperties();
+                SRXCheckBox.IsChecked = false;
+                prevRange = substructures.UpdateSubstructuresSRX(currRange, properties);
                 dispatcher.Start();
             }
             catch (Exception)
@@ -166,8 +192,32 @@ namespace grain_growth
 
         private void Energy_Vizualization_Button_Click(object sender, RoutedEventArgs e)
         {
-            prevRange = currRange;
-            nucleons.EnergyVisualization(currRange, nucleons);
+            currRange = new Range();
+            currRange = InitStructures.InitCellularAutomata(properties);
+
+            CellularAutomata.UpdateBitmap(prevRange);
+
+            currRange.StructureBitmap = prevRange.StructureBitmap;
+            CellularAutomata.UpdateGrainsArray(currRange);
+            CellularAutomata.UpdateBitmap(currRange);
+            nucleons.EnergyDistributor(prevRange, nucleons);
+            nucleons.EnergyVisualization(ref prevRange, nucleons);
+            CellularAutomata.UpdateBitmap(prevRange);
+            Image.Source = Converters.BitmapToImageSource(prevRange.StructureBitmap);
+        }
+
+        private void Previous_Structure_Button_Click(object sender, RoutedEventArgs e)
+        {
+            prevRange = new Range();
+            prevRange = InitStructures.InitCellularAutomata(properties);
+
+            CellularAutomata.UpdateBitmap(currRange);
+
+            prevRange.StructureBitmap = currRange.StructureBitmap;
+            CellularAutomata.UpdateGrainsArray(prevRange);
+            CellularAutomata.UpdateBitmap(prevRange);
+            prevRange = nucleons.EnergyDistributor(currRange, nucleons);
+
             CellularAutomata.UpdateBitmap(currRange);
             Image.Source = Converters.BitmapToImageSource(currRange.StructureBitmap);
         }
@@ -210,7 +260,7 @@ namespace grain_growth
             dispatcher.Start();
         }
 
-        private void Add_MCS_Button_Click(object sender, RoutedEventArgs e)
+        private void MCS_Growth_Button_Click(object sender, RoutedEventArgs e)
         {
             if(prevRange != null)
             {
@@ -452,6 +502,18 @@ namespace grain_growth
             }
         }
 
+        private PositionDistribiution ChoosePositionDistribution()
+        {
+            if (AnywhereRadioButton_SRX.IsChecked == true)
+            {
+                return PositionDistribiution.Anywhere;
+            }
+            else
+            {
+                return PositionDistribiution.OnGrainBoundaries;
+            }
+        }
+
         private SubstructuresType ChooseSubstructuresType()
         {
             if (SubstrRadioButton1.IsChecked == true)
@@ -464,5 +526,16 @@ namespace grain_growth
             }
         }
 
+        private MethodType ChooseMethodType()
+        {
+            if (CellularAutomataRadioButton.IsChecked == true)
+            {
+                return MethodType.CellularAutomata;
+            }
+            else
+            {
+                return MethodType.MonteCarlo;
+            }
+        }
     }
 }
