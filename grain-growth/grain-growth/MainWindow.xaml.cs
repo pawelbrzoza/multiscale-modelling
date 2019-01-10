@@ -329,7 +329,9 @@ namespace grain_growth
                 currRange.StructureBitmap = new Bitmap(openfiledialog.FileName);
                 
                 CellularAutomata.UpdateGrainsArray(currRange);
-                CellularAutomata.UpdateBitmap(currRange);
+                for (int i = 0; i < currRange.Width; i++)
+                    for (int j = 0; j < currRange.Height; j++)
+                        currRange.StructureBitmap.SetPixel(i, j, currRange.GrainsArray[i, j].Color);
             }
 
             dispatcher.Stop();
